@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Portfolio Premium | leozinwf.space
 
-## Getting Started
+Repositório oficial do meu portfólio pessoal. Uma aplicação construída sob o conceito visual **"Apple encontra startup cyberpunk minimalista"**, focada em performance, transições suaves e design focado em produto/SaaS.
 
-First, run the development server:
+Status do Projeto: **Online** 🌐 
+Link Oficial: [leozinwf.space](https://leozinwf.space)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tecnologias e Ferramentas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O ecossistema foi escolhido de forma cirúrgica para garantir o melhor índice de renderização (SEO) aliado à flexibilidade do Motion Design:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend:** Next.js (App Router v15/v16)
+- **Linguagem:** TypeScript
+- **Estilização:** Tailwind CSS v4 (Configurações baseadas em variáveis nativas do CSS)
+- **Animações:** Framer Motion (Transições de layout, loops infinitos e entradas amortecidas)
+- **Hospedagem & Deploy:** Vercel
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Arquitetura de Pastas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A estrutura foi planejada de modo modular e altamente escalável, dividindo responsabilidades visuais de lógicas de dados:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+src/
+├── app/               # Roteamento de páginas (Home, About, Projects, Contact)
+├── components/        # Componentes reutilizáveis organizados por escopo
+│   ├── layout/        # Navbar flutuante e estruturas globais
+│   └── sections/      # Seções de impacto da página principal (Hero, TechStack, etc)
+├── data/              # Arquivos estruturados contendo dados estáticos (Data-driven UI)
+└── styles/            # Estilos CSS globais e injeção de ruído cinematográfico

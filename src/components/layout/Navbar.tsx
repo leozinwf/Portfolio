@@ -9,6 +9,7 @@ const navLinks = [
   { name: "Início", href: "/" },
   { name: "Projetos", href: "/projects" },
   { name: "Sobre", href: "/about" },
+  { name: "Contato", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -60,14 +61,6 @@ export function Navbar() {
             );
           })}
         </div>
-
-        {/* CTA Contato (Desktop) */}
-        <Link
-          href="/contact"
-          className="hidden md:flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium bg-white text-black hover:bg-neutral-200 hover:scale-105 transition-all duration-300"
-        >
-          Contato
-        </Link>
 
         {/* Botão do Menu Mobile */}
         <button 
