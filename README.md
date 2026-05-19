@@ -1,33 +1,35 @@
-# 🌌 Portfolio Premium | leozinwf.space
+# Leonardo Sabatini 🌌
 
-Repositório oficial do meu portfólio pessoal. Uma aplicação construída sob o conceito visual **"Apple encontra startup cyberpunk minimalista"**, focada em performance, transições suaves e design focado em produto/SaaS.
+**Engenheiro de Produto | Automação (RPA) | Creative Developer**
 
-Status do Projeto: **Online** 🌐 
-Link Oficial: [leozinwf.space](https://leozinwf.space)
+São Bernardo do Campo, SP — Construindo soluções web onde a performance no back-end encontra um acabamento cinematográfico no front-end.
 
----
-
-## 🚀 Tecnologias e Ferramentas
-
-O ecossistema foi escolhido de forma cirúrgica para garantir o melhor índice de renderização (SEO) aliado à flexibilidade do Motion Design:
-
-- **Frontend:** Next.js (App Router v15/v16)
-- **Linguagem:** TypeScript
-- **Estilização:** Tailwind CSS v4 (Configurações baseadas em variáveis nativas do CSS)
-- **Animações:** Framer Motion (Transições de layout, loops infinitos e entradas amortecidas)
-- **Hospedagem & Deploy:** Vercel
+[🌐 Visite meu Portfólio Oficial (leozinwf.space)](https://leozinwf.space)
 
 ---
 
-## 🛠️ Arquitetura de Pastas
+### 🚀 O que eu construo
 
-A estrutura foi planejada de modo modular e altamente escalável, dividindo responsabilidades visuais de lógicas de dados:
+Não escrevo apenas código, entrego valor de negócio. Minha stack e foco de atuação se dividem em três pilares:
 
-```text
-src/
-├── app/               # Roteamento de páginas (Home, About, Projects, Contact)
-├── components/        # Componentes reutilizáveis organizados por escopo
-│   ├── layout/        # Navbar flutuante e estruturas globais
-│   └── sections/      # Seções de impacto da página principal (Hero, TechStack, etc)
-├── data/              # Arquivos estruturados contendo dados estáticos (Data-driven UI)
-└── styles/            # Estilos CSS globais e injeção de ruído cinematográfico
+1. **Produtos SaaS & Interfaces:** `Next.js`, `React`, `TypeScript`, `Tailwind CSS`, `Framer Motion`.
+2. **Engenharia de Automação:** Desenvolvimento de bots (RPA) para análise de sistemas e redução de gargalos manuais.
+3. **Infraestrutura de Dados:** `Supabase`, `SQL Server`, Gestão Cloud e Scripting massivo.
+
+---
+
+### 📌 Cases de Destaque
+
+* **Grana XP:** Plataforma SaaS de gestão financeira gamificada.
+* **Automações Corporativas:** Robôs atuando na camada de análise para mitigação de risco e falha humana.
+* **Infra de Alta Demanda:** Setup de servidores dedicados e port forwarding seguro em ambientes Linux/Oracle Cloud.
+
+---
+
+### ⚡ Vamos conversar?
+
+Estou sempre aberto a desafios que exigem lógica complexa de dados e uma experiência de usuário impecável.
+
+* 📧 E-mail: leozinworkflow@gmail.com
+* 💼 LinkedIn: [in/leonardosabatini](https://linkedin.com/in/leonardosabatini)
+* 🎥 Audiovisual & VFX: [Behance](https://behance.net/leonardosabatini)

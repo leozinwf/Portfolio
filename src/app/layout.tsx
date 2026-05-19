@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -13,9 +13,46 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-mono",
 });
 
+// Configuração avançada de SEO e Open Graph
 export const metadata: Metadata = {
-  title: "Leonardo | Full-Stack Developer",
-  description: "Criando experiências digitais modernas, funcionais e visuais.",
+  title: {
+    default: "Leonardo Sabatini | Engenharia de Produto & Experiência",
+    template: "%s | Leonardo Sabatini"
+  },
+  description: "Da infraestrutura de dados à microinteração da interface. Traduzo problemas complexos em soluções digitais rápidas, escaláveis e memoráveis.",
+  keywords: ["Full-Stack", "Engenharia de Software", "RPA", "Next.js", "React", "Motion Design", "UX/UI", "Automação", "São Bernardo do Campo"],
+  authors: [{ name: "Leonardo Sabatini", url: "https://leozinwf.space" }],
+  creator: "Leonardo Sabatini",
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://leozinwf.space",
+    title: "Leonardo Sabatini | Engenharia de Produto",
+    description: "Desenvolvimento de produtos digitais onde a performance encontra o design cinematográfico.",
+    siteName: "Leonardo Sabatini",
+    // O Next.js vai procurar automaticamente um arquivo opengraph-image.png na pasta app
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Leonardo Sabatini | Engenharia de Produto",
+    description: "Desenvolvimento de produtos digitais onde a performance encontra o design cinematográfico.",
+    creator: "@leozinwf",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
 };
 
 export default function RootLayout({
@@ -24,14 +61,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="dark">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden`}>
+    <html lang="pt-BR" className="dark scroll-smooth">
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden selection:bg-accent-blue/30`}>
         
         {/* Elementos de fundo premium */}
         <div className="bg-noise"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-glow-gradient pointer-events-none -z-10"></div>
         
-        {/* NOSSO NOVO NAVBAR FLUTUANTE */}
         <Navbar />
 
         <main className="container mx-auto px-4 md:px-8 pt-12">
