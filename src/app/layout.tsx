@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -68,7 +69,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Configuração do JSON-LD para o Google te ler como uma Entidade Profissional
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -85,21 +85,39 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className="dark scroll-smooth">
+    <html lang="pt-BR" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
+        {/* Script de execução imediata: Lê o localStorage antes da renderização do React */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden selection:bg-accent-blue/30`}>
-        {/* Elementos de fundo premium */}
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden selection:bg-accent-blue/20`}>
         <div className="bg-noise"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-glow-gradient pointer-events-none -z-10"></div>
+        
         <Navbar />
+
         <main className="container mx-auto px-4 md:px-8 pt-12">
           {children}
         </main>
+
+        <Footer />
+
       </body>
     </html>
   );

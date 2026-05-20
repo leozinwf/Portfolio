@@ -70,34 +70,6 @@ export function Cta() {
             Entrar em Contato
           </Link>
         </motion.div>
-
-        {/* Rodapé com todas as redes configuradas */}
-        <motion.footer 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="border-t border-border/40 pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
-        >
-          <div className="flex items-center gap-3">
-            {socialLinks.map((link, i) => (
-              <a 
-                key={i} 
-                href={link.href} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-blue hover:bg-surface/50 transition-all duration-300"
-              >
-                {link.icon}
-              </a>
-            ))}
-          </div>
-
-          <div className="text-neutral-500 text-sm flex flex-col items-center md:items-end font-mono">
-            <p>© 2026 Leonardo Sabatini. Todos os direitos reservados.</p>
-            <p className="mt-1">São Bernardo do Campo, SP — Brasil.</p>
-          </div>
-        </motion.footer>
       </div>
     </section>
   );

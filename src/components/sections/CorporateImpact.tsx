@@ -1,104 +1,97 @@
 "use client";
 
 import { motion, type Easing } from "framer-motion";
-import { Bot, LineChart, Server, ShieldCheck } from "lucide-react";
+import { Sparkles, Layers } from "lucide-react";
 
 const cinematicEasing: Easing = [0.16, 1, 0.3, 1] as const;
 
 export function CorporateImpact() {
   return (
-    <section className="py-32 w-full relative">
-      {/* Background Glow sutil */}
+    <section className="py-32 w-full relative border-t border-border/40 overflow-hidden">
+      {/* Background Glow dinâmico adaptado */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-3/4 bg-accent-blue/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
 
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
         
         {/* Cabeçalho */}
-        <div className="mb-20">
+        <div className="mb-20 text-center max-w-3xl mx-auto">
           <motion.h2 
             initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: cinematicEasing }}
-            className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
+            className="text-4xl md:text-5xl font-bold tracking-tight mb-6"
           >
-            Impacto em <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 to-neutral-600">escala.</span>
+            A vantagem do <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-neutral-400">Perfil Híbrido</span>.
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, delay: 0.1, ease: cinematicEasing }}
-            className="text-neutral-400 text-lg max-w-2xl leading-relaxed"
+            className="text-neutral-400 text-lg md:text-xl leading-relaxed"
           >
-            Sistemas arquitetados para resolver gargalos operacionais, reduzir falhas humanas e garantir estabilidade para fluxos de trabalho críticos.
+            A lacuna entre o design visual e a engenharia de software é onde a maioria dos produtos falha. O perfil híbrido elimina essa fricção.
           </motion.p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(280px,auto)]">
-
-          {/* Card 1: Dashboards (Ocupa 1 coluna) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        {/* Grid Split do Impacto */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+          
+          {/* Card 1: Produto Coeso */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, delay: 0.1, ease: cinematicEasing }}
-            className="md:col-span-1 group relative p-8 md:p-10 rounded-[32px] bg-surface/20 border border-border/50 hover:bg-surface/40 hover:border-accent-purple/30 transition-all duration-500 overflow-hidden flex flex-col justify-end"
+            transition={{ duration: 1.2, ease: cinematicEasing }}
+            className="group p-8 md:p-10 rounded-[32px] border border-border/50 bg-surface/20 backdrop-blur-sm flex flex-col justify-between hover:border-accent-blue/30 transition-all duration-300"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-accent-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-            <div className="mb-8 p-4 bg-background/50 rounded-2xl w-fit border border-border/50">
-              <LineChart className="w-8 h-8 text-accent-purple" />
-            </div>
-            
-            <h3 className="text-2xl font-bold text-white mb-4">
-              SaaS & UX Interna
-            </h3>
-            <p className="text-neutral-400 leading-relaxed">
-              Dashboards analíticos de alta performance. Convertendo bancos de dados densos em decisões visuais claras.
-            </p>
-          </motion.div>
-
-          {/* Card 2: Infra (Ocupa as 3 colunas em formato horizontal) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, delay: 0.2, ease: cinematicEasing }}
-            className="md:col-span-3 group relative p-8 md:p-10 rounded-[32px] bg-surface/20 border border-border/50 hover:bg-surface/40 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-8"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-            <div className="flex-1 max-w-2xl">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-background/50 rounded-xl border border-border/50">
-                  <Server className="w-6 h-6 text-emerald-500" />
-                </div>
-                <div className="p-3 bg-background/50 rounded-xl border border-border/50">
-                  <ShieldCheck className="w-6 h-6 text-emerald-500" />
-                </div>
+            <div>
+              <div className="w-14 h-14 mb-8 p-3 bg-surface rounded-2xl border border-border/50 shadow-inner flex items-center justify-center">
+                <Sparkles className="w-7 h-7 text-accent-blue" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Infraestrutura & Nuvem
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                Execução Sem Perda de Fidelidade
               </h3>
-              <p className="text-neutral-400 leading-relaxed">
-                Setup de ambientes seguros em nuvem (Oracle Cloud/Linux) e orquestração de scripts para manipulação massiva de dados, garantindo que o back-end suporte a escalabilidade da operação.
+              <p className="text-neutral-400 leading-relaxed text-base md:text-lg mb-8">
+                O maior pesadelo de um produto é um design incrível no Figma que se transforma em uma interface engessada no navegador. Sendo o criador da experiência e o engenheiro da interface, garanto que cada pixel, sombra e micro-interação imaginada seja codificada com precisão absoluta.
               </p>
             </div>
             
-            {/* Elemento Visual Decorativo (Terminal Fake) */}
-            <div className="w-full md:w-[400px] h-32 bg-background/80 rounded-2xl border border-border/50 p-4 font-mono text-xs text-emerald-500/70 flex flex-col gap-2 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.2)_50%)] bg-[length:100%_4px] pointer-events-none"></div>
-              <span>&gt; system_check --status</span>
-              <span>[OK] All sub-systems operational.</span>
-              <span>&gt; _</span>
-              <div className="w-2 h-4 bg-emerald-500/70 animate-pulse"></div>
+            <div className="pt-6 border-t border-border/40 flex items-center justify-between text-xs font-mono uppercase tracking-widest text-neutral-400">
+              <span>Resultado</span>
+              <span className="text-accent-blue font-bold">100% Fidelidade Visual</span>
             </div>
+          </motion.div>
 
+          {/* Card 2: Sistemas Orgânicos */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: cinematicEasing }}
+            className="group p-8 md:p-10 rounded-[32px] border border-border/50 bg-surface/20 backdrop-blur-sm flex flex-col justify-between hover:border-accent-purple/30 transition-all duration-300"
+          >
+            <div>
+              <div className="w-14 h-14 mb-8 p-3 bg-surface rounded-2xl border border-border/50 shadow-inner flex items-center justify-center">
+                <Layers className="w-7 h-7 text-accent-purple" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                Sistemas, não apenas Telas
+              </h3>
+              <p className="text-neutral-400 leading-relaxed text-base md:text-lg mb-8">
+                Interfaces estáticas não retêm usuários. Através do "Systems Thinking", construo aplicações completas (SaaS, Dashboards, Web Apps) integrando lógicas de automação e regras complexas de negócio, tudo empacotado em um ecossistema fluido e cinematográfico.
+              </p>
+            </div>
+            
+            <div className="pt-6 border-t border-border/40 flex items-center justify-between text-xs font-mono uppercase tracking-widest text-neutral-400">
+              <span>Resultado</span>
+              <span className="text-accent-purple font-bold">Ecossistemas Escaláveis</span>
+            </div>
           </motion.div>
 
         </div>
+
       </div>
     </section>
   );

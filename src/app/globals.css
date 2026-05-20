@@ -1,35 +1,108 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* Configuração do Tema (Tailwind v4) */
+/* Configuração de Variáveis do Tema (Tailwind v4) */
 @theme {
-  --color-background: #050505;
-  --color-surface: #111111;
-  --color-border: #222222;
-  --color-accent-blue: #3b82f6;
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  
+  --color-accent-blue: var(--accent-blue);
   --color-accent-purple: #8b5cf6;
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
   --background-image-grid-pattern: url('/grid.svg');
-  --background-image-glow-gradient: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 50%);
+  --background-image-glow-gradient: radial-gradient(circle at 50% 0%, var(--glow-color), transparent 60%);
+}
+
+/* ==========================================================================
+   PALETA LIGHT MODE (Fundo Branco Confortável e Texto Escuro)
+   ========================================================================== */
+:root {
+  --background: #ffffff;
+  --surface: #f4f4f5; /* zinc-100 */
+  --border: #e4e4e7;  /* zinc-200 */
+  --accent-blue: #2563eb;
+  --glow-color: rgba(37, 99, 235, 0.05);
+  --noise-opacity: 0.012;
+
+  /* Variáveis Dinâmicas para mapear classes utilitárias legadas */
+  --text-main-dynamic: #09090b;       /* Substitui text-white no modo claro */
+  --text-muted-dynamic: #4a4a4e;      /* Substitui text-neutral-400 no modo claro */
+  --text-accent-dynamic: #27272a;     /* Substitui text-neutral-300 no modo claro */
+  --card-inner-bg: #ffffff;
+}
+
+/* ==========================================================================
+   PALETA DARK MODE (Soft Graphite - Sem Preto Puro para Evitar Vertigem)
+   ========================================================================== */
+.dark {
+  --background: #0f1117; 
+  --surface: #1e212b;    
+  --border: #333847;     
+  --accent-blue: #3b82f6;
+  --glow-color: rgba(59, 130, 246, 0.15);
+  --noise-opacity: 0.015;
+
+  --text-main-dynamic: #f8fafc;       
+  --text-muted-dynamic: #94a3b8;      
+  --text-accent-dynamic: #cbd5e1;     
+  --card-inner-bg: #0b0d12;
 }
 
 /* Estilos Globais Base */
 @layer base {
   body {
     background-color: var(--color-background);
-    color: #e5e5e5; /* neutral-200 */
+    color: var(--text-main-dynamic);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Transição suave ao clicar no botão */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
   
-  ::selection {
-    background-color: rgba(59, 130, 246, 0.3); /* accent-blue com opacidade */
+  /* Sincronização automatizada das classes text-utilitárias do projeto */
+  h1, h2, h3, h4, .text-white {
+    color: var(--text-main-dynamic) !important;
+    transition: color 0.3s ease;
+  }
+  
+  p, .text-neutral-400 {
+    color: var(--text-muted-dynamic) !important;
+    transition: color 0.3s ease;
+  }
+  
+  .text-neutral-300 {
+    color: var(--text-accent-dynamic) !important;
+    transition: color 0.3s ease;
+  }
+
+  /* Inversão inteligente do botão principal de CTA */
+  .bg-white {
+    background-color: var(--text-main-dynamic) !important;
+    color: var(--background) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .bg-white .text-black, .text-black {
+    color: var(--background) !important;
+  }
+
+  /* Ajuste de opacidade dos cards e do menu flutuante */
+  .bg-surface\/40 { background-color: var(--color-surface) !important; opacity: 0.9; }
+  .bg-surface\/20 { background-color: var(--color-surface) !important; opacity: 0.85; }
+  .bg-background\/50 { background-color: var(--color-background) !important; opacity: 0.7; }
+  .bg-surface\/30 { background-color: var(--color-surface) !important; }
+
+  /* Ajusta o painel interno dos mockups (FeaturedProjects) */
+  .group .bg-background\/80 {
+    background-color: var(--card-inner-bg) !important;
+    border-color: var(--color-border) !important;
   }
 }
 
-/* Efeito de ruído (noise) premium - AJUSTADO PARA SER MUITO MAIS SUTIL */
 .bg-noise {
   position: fixed;
   top: 0;
@@ -38,6 +111,7 @@
   height: 100vh;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.005; /* Reduzido drasticamente para ser quase imperceptível */
+  opacity: var(--noise-opacity);
+  transition: opacity 0.3s ease;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
