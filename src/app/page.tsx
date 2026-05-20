@@ -23,10 +23,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-32 pb-4 overflow-hidden">
-      
+
       {/* --- HERO SECTION REFINADA --- */}
       <div className="flex flex-col items-center text-center px-4 md:px-8 max-w-5xl relative">
-        
+
         {/* VFX Spotlight: Luz de fundo orgânica e sutil */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.12),transparent_60%)] pointer-events-none -z-10 blur-3xl"></div>
 
@@ -71,18 +71,21 @@ export default function Home() {
           transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-5 z-10 w-full sm:w-auto"
         >
-          <button 
+          <button
             onClick={handleScrollToProjects}
+            aria-label="Rolar a página para ver os projetos em destaque"
             className="group relative px-8 py-4 rounded-2xl bg-white text-black font-semibold hover:bg-neutral-200 transition-all duration-300 flex items-center justify-center gap-3 w-full sm:w-auto overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(255,255,255,0.2)]"
           >
             <span className="relative z-10 flex items-center gap-2">
               Explorar Cases
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              {/* Esconde o ícone do leitor de tela, já que é puramente decorativo */}
+              <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </span>
           </button>
-          
-          <Link 
+
+          <Link
             href="/contact"
+            aria-label="Ir para a página de contato para iniciar uma conversa"
             className="px-8 py-4 rounded-2xl border border-border/80 bg-surface/30 hover:bg-surface hover:border-accent-blue/50 transition-all duration-300 text-white flex items-center justify-center w-full sm:w-auto backdrop-blur-sm"
           >
             Iniciar conversa
@@ -91,7 +94,7 @@ export default function Home() {
       </div>
 
       {/* --- STACK INFINITA COM REVEAL --- */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, filter: "blur(5px)" }}
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{ duration: 2, delay: 0.6, ease: cinematicEasing }}
@@ -99,7 +102,7 @@ export default function Home() {
       >
         <TechStack />
       </motion.div>
-      
+
       {/* ... Projetos em destaque ... */}
       <div id="featured-projects" className="w-full scroll-mt-32">
         <FeaturedProjects />
@@ -116,7 +119,7 @@ export default function Home() {
 
       {/* --- CTA FINAL --- */}
       <Cta />
-      
+
     </div>
   );
 }

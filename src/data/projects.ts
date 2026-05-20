@@ -11,9 +11,9 @@ export const featuredProjects = [
       "Sincronização Serverless de alta performance"
     ],
     stack: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
-    link: "#",
+    link: "https://grana-xp.vercel.app/",
     github: "#",
-    color: "from-blue-600/20 to-purple-600/20", 
+    color: "from-blue-600/20 to-purple-600/20",
   },
   {
     id: 2,
@@ -27,24 +27,34 @@ export const featuredProjects = [
       "Mitigação de riscos em etapas críticas"
     ],
     stack: ["Python", "SQL Server", "RPA", "Node.js"],
-    link: "#",
+    link: "https://dootax.com.br/",
     github: "#",
     color: "from-emerald-600/20 to-teal-600/20",
   },
   {
     id: 3,
-    title: "Infraestrutura & Redes",
-    type: "Cloud Computing & Scripts",
-    problem: "Necessidade de ambientes dedicados altamente configuráveis e seguros para jogos online, que exigiam manipulação massiva de dados.",
-    solution: "Arquitetura e gestão de servidores dedicados (Oracle Cloud), incluindo desenvolvimento de scripts para tradução em massa e segurança de rede.",
+    title: "DooHub",
+    type: "Sistema de Gestão Empresarial",
+    problem: "Empresas enfrentam dificuldades para centralizar processos internos como controle de ponto, banco de horas, comunicação e gestão de colaboradores em uma única plataforma moderna e intuitiva.",
+    solution: "Desenvolvimento de uma plataforma completa de gestão empresarial com autenticação segura, controle de acesso, gerenciamento de colaboradores e módulos integrados para RH e comunicação interna.",
     features: [
-      "Gestão avançada de servidores Linux",
-      "Scripts de manipulação massiva de dados",
-      "Configuração de rede e port forwarding seguro"
+      "Controle de ponto e banco de horas",
+      "Gestão de colaboradores e permissões",
+      "Sistema de autenticação e convites",
+      "Feedbacks e comunicação interna",
+      "Relatórios e histórico de registros",
+      "Interface responsiva com animações modernas"
     ],
-    stack: ["Oracle Cloud", "Linux", "Shell Script", "Redes"],
-    link: "#",
-    github: "#",
-    color: "from-orange-600/20 to-red-600/20",
+    stack: [
+      "React 19",
+      "Vite",
+      "Supabase",
+      "Tailwind CSS",
+      "React Router",
+      "Framer Motion"
+    ],
+    link: "https://doohub.vercel.app/",
+    github: "https://github.com/leozinwf/doohub",
+    color: "from-cyan-600/20 to-blue-600/20",
   }
 ];

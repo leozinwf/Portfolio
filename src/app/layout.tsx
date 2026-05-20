@@ -20,7 +20,15 @@ export const metadata: Metadata = {
     template: "%s | Leonardo Sabatini"
   },
   description: "Da infraestrutura de dados à microinteração da interface. Traduzo problemas complexos em soluções digitais rápidas, escaláveis e memoráveis.",
-  keywords: ["Full-Stack", "Engenharia de Software", "RPA", "Next.js", "React", "Motion Design", "UX/UI", "Automação", "São Bernardo do Campo"],
+  keywords: [
+    "Software Engineer Brazil", // Foco global/remoto
+    "Remote Full-Stack Developer", // Foco global/remoto
+    "Especialista em RPA",
+    "Next.js",
+    "React",
+    "Supabase",
+    "Engenharia de Software São Bernardo do Campo" // Mantém a autoridade local
+  ],
   authors: [{ name: "Leonardo Sabatini", url: "https://leozinwf.space" }],
   creator: "Leonardo Sabatini",
   openGraph: {
@@ -60,20 +68,38 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Configuração do JSON-LD para o Google te ler como uma Entidade Profissional
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Leonardo Sabatini",
+    "url": "https://leozinwf.space",
+    "jobTitle": "Engenheiro de Software Full-Stack",
+    "knowsAbout": ["Desenvolvimento Web", "React", "Next.js", "RPA", "Supabase", "Motion Design"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "São Bernardo do Campo",
+      "addressRegion": "SP",
+      "addressCountry": "BR"
+    }
+  };
+
   return (
     <html lang="pt-BR" className="dark scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden selection:bg-accent-blue/30`}>
-        
         {/* Elementos de fundo premium */}
         <div className="bg-noise"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-glow-gradient pointer-events-none -z-10"></div>
-        
         <Navbar />
-
         <main className="container mx-auto px-4 md:px-8 pt-12">
           {children}
         </main>
-        
       </body>
     </html>
   );
