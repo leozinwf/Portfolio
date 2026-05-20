@@ -11,28 +11,13 @@ export const featuredProjects = [
       "Sincronização Serverless de alta performance"
     ],
     stack: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
+    image: "/projects/grana_xp.webp",
     link: "https://grana-xp.vercel.app/",
     github: "#",
     color: "from-blue-600/20 to-purple-600/20",
   },
   {
     id: 2,
-    title: "Automação Corporativa (RPA)",
-    type: "Engenharia de Automação",
-    problem: "Equipes perdiam centenas de horas mensais em rotinas manuais de análise de sistemas, gerando gargalos operacionais e falhas humanas.",
-    solution: "Desenvolvimento de robôs invisíveis que atuam na camada de análise de dados, validando regras de negócio complexas em segundos.",
-    features: [
-      "Redução drástica de falhas operacionais",
-      "Análise de dados em lote (Batch processing)",
-      "Mitigação de riscos em etapas críticas"
-    ],
-    stack: ["Python", "SQL Server", "RPA", "Node.js"],
-    link: "https://dootax.com.br/",
-    github: "#",
-    color: "from-emerald-600/20 to-teal-600/20",
-  },
-  {
-    id: 3,
     title: "DooHub",
     type: "Sistema de Gestão Empresarial",
     problem: "Empresas enfrentam dificuldades para centralizar processos internos como controle de ponto, banco de horas, comunicação e gestão de colaboradores em uma única plataforma moderna e intuitiva.",
@@ -53,6 +38,7 @@ export const featuredProjects = [
       "React Router",
       "Framer Motion"
     ],
+    image: "/projects/doohub.webp",
     link: "https://doohub.vercel.app/",
     github: "https://github.com/leozinwf/doohub",
     color: "from-cyan-600/20 to-blue-600/20",

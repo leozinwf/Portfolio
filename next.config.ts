@@ -4,10 +4,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Se você for carregar imagens de domínios externos (ex: Github, Supabase Storage), declare-os aqui:
-    // remotePatterns: [
-    //   { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
-    // ],
+    // Adicione esta linha para permitir a qualidade 85 e a padrão 75:
+    qualities: [75, 85, 100], 
   },
 };
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -26,13 +27,24 @@ export function Navbar() {
       {/* A "pílula" flutuante */}
       <nav className="pointer-events-auto relative flex items-center justify-between w-full max-w-3xl px-4 py-3 rounded-full bg-surface/40 border border-border/60 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] z-50">
         
-        {/* Logo */}
+        {/* Logo Otimizado */}
         <Link 
           href="/" 
           onClick={() => setIsMobileMenuOpen(false)}
-          className="text-white font-bold text-lg tracking-wide hover:text-accent-blue transition-colors px-2"
+          aria-label="Ir para a página inicial"
+          className="flex items-center gap-3 group px-2"
         >
-          leozin<span className="text-accent-blue">.space</span>
+          <Image 
+            src="/logo.png" 
+            alt="Logotipo oficial de Leonardo Sabatini"
+            width={32} 
+            height={32}
+            priority 
+            className="w-auto h-7 transition-transform duration-300 group-hover:scale-105"
+          />
+          <span className="text-white font-bold text-lg tracking-wide hidden sm:block">
+            leozin<span className="text-accent-blue">.space</span>
+          </span>
         </Link>
 
         {/* Links Desktop */}
@@ -62,21 +74,19 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Botão do Menu Mobile */}
+        {/* Botão do Menu Mobile com Acessibilidade */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 text-neutral-400 hover:text-white transition-colors"
-          aria-label="Toggle menu"
+          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
         >
           {isMobileMenuOpen ? (
-            // Ícone de "X" (Fechar)
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           ) : (
-            // Ícone de "3 tracinhos" (Menu)
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="4" x2="20" y1="12" y2="12" />
               <line x1="4" x2="20" y1="6" y2="6" />
               <line x1="4" x2="20" y1="18" y2="18" />
