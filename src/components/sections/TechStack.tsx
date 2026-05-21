@@ -1,50 +1,67 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Cpu } from "lucide-react";
 
-const technologies = [
-  "React 19", "Next.js", "TypeScript", "Node.js", 
-  "Supabase", "Tailwind CSS", "Framer Motion", "Vite",
-  "Adobe Suite", "Blender 3D", "Figma"
+const cinematicEasing = [0.16, 1, 0.3, 1] as const;
+
+const stackCategories = [
+  {
+    title: "Engenharia de Interface",
+    tools: ["React 19", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"]
+  },
+  {
+    title: "Infraestrutura & Dados",
+    tools: ["Supabase", "PostgreSQL", "Node.js", "Serverless"]
+  },
+  {
+    title: "Design & Experiência",
+    tools: ["Figma", "UI/UX System", "Motion Design", "Design Comportamental"]
+  }
 ];
 
 export function TechStack() {
   return (
-    <section className="py-24 w-full relative bg-background border-t border-white/5">
-      <div className="container mx-auto px-4 md:px-8 max-w-6xl text-center">
+    <section className="py-20 w-full relative z-10">
+      <div className="container mx-auto px-4 md:px-8 max-w-5xl">
         
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="flex flex-col items-center justify-center mb-12"
-        >
-          <Cpu className="w-6 h-6 text-neutral-500 mb-6" strokeWidth={1.5} />
-          <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
-            Infraestrutura Moderna
-          </h2>
-          <p className="text-neutral-400 font-light max-w-2xl">
-            As nossas plataformas são construídas sobre um ecossistema de ponta, focado rigorosamente na performance, escalabilidade e numa experiência visual imersiva.
-          </p>
-        </motion.div>
-
-        <motion.div
+        <motion.p 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 1 }}
-          className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto"
+          transition={{ duration: 1 }}
+          className="text-center text-sm font-mono tracking-widest uppercase text-neutral-500 mb-12"
         >
-          {technologies.map((tech, i) => (
-            <div 
-              key={i} 
-              className="px-6 py-3 rounded-full border border-white/5 bg-white/[0.01] text-neutral-400 text-sm font-mono tracking-wide hover:bg-white/[0.03] hover:text-white hover:border-white/10 transition-all duration-300 cursor-default"
+          Fundação Tecnológica
+        </motion.p>
+
+        {/* Atualizado para divide-border (linhas divisórias visíveis em ambos os temas) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-border">
+          {stackCategories.map((category, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: index * 0.1, ease: cinematicEasing }}
+              className="flex flex-col items-center pt-8 md:pt-0 px-4 text-center"
             >
-              {tech}
-            </div>
+              <h4 className="text-white font-medium mb-6 text-sm tracking-wide">
+                {category.title}
+              </h4>
+              <div className="flex flex-wrap justify-center gap-3">
+                {category.tools.map((tool) => (
+                  <span 
+                    key={tool} 
+                    // Atualizado para bg-surface/50 e border-border
+                    className="px-3 py-1.5 text-xs font-mono text-neutral-400 bg-surface/50 border border-border rounded-md shadow-sm"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>
