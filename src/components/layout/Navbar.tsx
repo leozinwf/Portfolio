@@ -2,22 +2,22 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MoreHorizontal, Menu, X } from "lucide-react"; // Removemos o ChevronDown
+import { MoreHorizontal, Menu, X, ShieldCheck } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
 
 const primaryLinks = [
   { name: "Início", href: "/" },
   { name: "Projetos", href: "/projects" },
   { name: "Motion", href: "/motion" },
-  { name: "Playground", href: "/playground" },
+  { name: "Sobre", href: "/about" },
+  { name: "Contato", href: "/contact" },
 ];
 
 const secondaryLinks = [
   { name: "Blog", href: "/blog" },
-  { name: "Sobre", href: "/about" },
-  { name: "Contato", href: "/contact" },
+  { name: "Playground", href: "/playground" },
 ];
 
 const allLinks = [...primaryLinks, ...secondaryLinks];
@@ -29,73 +29,64 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
+    // Mantém a verificação de tema original
     setIsDark(document.documentElement.classList.contains("dark"));
 
+    // Inicializa o cliente do Supabase para verificar autenticação
+    const supabase = createClient();
+
+    // Verificação inicial do estado do utilizador
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) setIsLogged(true);
+    });
+
+    // Escuta alterações de login/logout em tempo real
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsLogged(!!session?.user);
+    });
+
+    // Mantém o fechamento do dropdown ao clicar fora
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDesktopDropdownOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const toggleTheme = () => {
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
-      setIsDark(true);
-    }
-  };
-
-  const isSecondaryActive = secondaryLinks.some((link) => pathname === link.href);
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/60 border-b border-border/40 backdrop-blur-md transition-colors duration-300">
-      <nav className="container mx-auto px-4 md:px-8 h-16 flex items-center justify-between max-w-6xl">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-md border-b border-border/40 transition-colors duration-500">
+      <nav className="container mx-auto px-6 md:px-8 h-16 flex items-center justify-between max-w-5xl">
         
-        <Link 
-          href="/" 
-          onClick={() => { setIsMobileMenuOpen(false); setIsDesktopDropdownOpen(false); }}
-          aria-label="Ir para a página inicial"
-          className="flex items-center gap-2.5 group shrink-0"
-        >
-          <Image 
-            src="/logo.png" 
-            alt="Logotipo oficial"
-            width={28} 
-            height={28}
-            priority 
-            className="w-auto h-6 transition-transform duration-300 group-hover:scale-105"
-          />
-          <span className="text-white font-bold text-base tracking-wide hidden sm:block">
-            leozin<span className="text-accent-blue">.space</span>
-          </span>
+        {/* LOGO */}
+        <Link href="/" className="font-semibold tracking-tight text-white hover:opacity-80 transition-opacity">
+          LeozinWF
         </Link>
 
-        {/* NAVEGAÇÃO DESKTOP HÍBRIDA */}
-        <div className="hidden lg:flex items-center gap-1 bg-surface/30 rounded-full p-1 border border-border/30 relative">
-          
+        {/* DESKTOP NAVIGATION */}
+        <div className="hidden lg:flex items-center gap-1">
           {primaryLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative px-4 py-1.5 rounded-full text-xs md:text-sm font-medium transition-colors ${
+                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                   isActive ? "text-white" : "text-neutral-400 hover:text-white"
                 }`}
               >
                 {isActive && (
                   <motion.div
-                    layoutId="active-nav-pill"
-                    className="absolute inset-0 bg-white/10 rounded-full -z-10"
+                    layoutId="activeNavBg"
+                    className="absolute inset-0 bg-surface -z-10 rounded-xl border border-border/30"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -104,27 +95,16 @@ export function Navbar() {
             );
           })}
 
-          {/* Trigger do Dropdown com os 3 pontinhos (Mais) */}
-          <div className="relative flex items-center" ref={dropdownRef}>
-            {/* O erro TS foi corrigido simplificando as propriedades ARIA */}
+          {/* DROPDOWN PARA LINKS SECUNDÁRIOS */}
+          <div className="relative" ref={dropdownRef}>
             <button
-              type="button"
               onClick={() => setIsDesktopDropdownOpen(!isDesktopDropdownOpen)}
-              aria-expanded={isDesktopDropdownOpen ? "true" : "false"}
-              aria-haspopup="menu"
-              aria-label="Menu expandido"
-              className={`flex items-center justify-center w-8 h-8 ml-0.5 rounded-full transition-all cursor-pointer relative ${
-                isSecondaryActive ? "text-white" : "text-neutral-400 hover:text-white hover:bg-white/5"
+              className={`p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-surface/50 border border-transparent transition-all ${
+                isDesktopDropdownOpen ? "bg-surface/50 border-border/30 text-white" : ""
               }`}
+              aria-label="Mais links"
             >
-              {isSecondaryActive && (
-                <motion.div
-                  layoutId="active-nav-pill"
-                  className="absolute inset-0 bg-white/10 rounded-full -z-10"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <MoreHorizontal className="w-5 h-5" />
+              <MoreHorizontal className="w-4 h-4" />
             </button>
 
             <AnimatePresence>
@@ -133,8 +113,8 @@ export function Navbar() {
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="absolute right-0 top-10 w-44 rounded-2xl border border-border/60 bg-background/95 backdrop-blur-xl p-2 shadow-xl flex flex-col gap-0.5"
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-2 w-48 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-xl p-2 shadow-xl z-50 flex flex-col gap-0.5"
                 >
                   {secondaryLinks.map((link) => {
                     const isActive = pathname === link.href;
@@ -143,10 +123,8 @@ export function Navbar() {
                         key={link.name}
                         href={link.href}
                         onClick={() => setIsDesktopDropdownOpen(false)}
-                        className={`w-full px-4 py-2.5 rounded-xl text-left text-xs md:text-sm font-medium transition-colors ${
-                          isActive 
-                            ? "bg-white/10 text-white" 
-                            : "text-neutral-400 hover:bg-surface hover:text-white"
+                        className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                          isActive ? "bg-surface text-white" : "text-neutral-400 hover:text-white hover:bg-surface/30"
                         }`}
                       >
                         {link.name}
@@ -157,31 +135,40 @@ export function Navbar() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* BOTÃO ADMIN DINÂMICO DESKTOP */}
+          {isLogged && (
+            <Link
+              href="/admin"
+              className={`ml-4 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono tracking-wider uppercase transition-all ${
+                pathname.startsWith("/admin")
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
+                  : "border-border bg-surface/50 text-neutral-400 hover:text-white hover:border-neutral-500/30"
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" /> Admin
+            </Link>
+          )}
         </div>
 
-        {/* AÇÕES DA DIREITA */}
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="p-2 rounded-full border border-border/40 bg-background/20 text-neutral-400 hover:text-white transition-all duration-200 active:scale-95 cursor-pointer"
-            aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-          >
-            {isDark ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/>
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-              </svg>
-            )}
-          </button>
+        {/* MOBILE MENU TRIGGER */}
+        <div className="flex lg:hidden items-center gap-4">
+          {isLogged && (
+            <Link
+              href="/admin"
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-mono uppercase tracking-wide transition-all ${
+                pathname.startsWith("/admin")
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
+                  : "border-border bg-surface/50 text-neutral-400"
+              }`}
+            >
+              <ShieldCheck className="w-3 h-3" /> Admin
+            </Link>
+          )}
 
-          <button 
-            type="button"
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-surface/40 border border-border/30 text-white transition-colors cursor-pointer"
             aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -189,6 +176,7 @@ export function Navbar() {
         </div>
       </nav>
 
+      {/* MOBILE MENU DROPDOWN */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div

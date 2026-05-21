@@ -1,78 +1,214 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { GithubIcon } from "@/components/ui/icons";
-import { ArrowUpRight } from "lucide-react";
-import { featuredProjects } from "@/data/projects";
+import { ArrowUpRight, FolderGit2, Loader2, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 
-const cinematicEasing: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const cinematicEasing = [0.16, 1, 0.3, 1] as const;
+
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  slug: string;
+  problem: string;
+  strategy: string;
+  solution: string;
+  result: string;
+  image_url: string;
+  live_url: string;
+}
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAllProjects() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("is_published", true)
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setProjects(data as Project[]);
+      }
+      setIsLoading(false);
+    }
+
+    fetchAllProjects();
+  }, []);
+
   return (
-    <div className="pt-32 pb-20 min-h-screen">
-      <div className="max-w-6xl mx-auto px-4">
-        
-        {/* Cabeçalho */}
+    <div className="min-h-screen bg-background pt-32 pb-24 transition-colors duration-500">
+      <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+
+        {/* Navegação de Retorno */}
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.2, ease: cinematicEasing }}
-          className="mb-16 md:mb-24"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: cinematicEasing }}
+          className="mb-12"
         >
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            Projetos<span className="text-accent-blue">.</span>
-          </h1>
-          <p className="text-neutral-400 text-lg max-w-2xl">
-            Uma coleção de sistemas, automações e interfaces criadas para resolver problemas reais e gerar valor.
-          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Voltar ao início
+          </Link>
         </motion.div>
 
-        {/* Grid de Projetos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: index * 0.1, duration: 1.2, ease: cinematicEasing }}
-              className="group bg-surface/20 border border-border/50 rounded-[32px] overflow-hidden hover:border-accent-blue/40 transition-colors flex flex-col"
-            >
-              {/* Mockup Area */}
-              <div className={`h-64 bg-gradient-to-br ${project.color} flex items-center justify-center border-b border-border/50 relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-background/20 backdrop-blur-[2px]"></div>
-                <span className="text-white/30 font-mono tracking-widest uppercase text-sm relative z-10">Mockup / Preview</span>
-              </div>
-              
-              {/* Conteúdo */}
-              <div className="p-8 md:p-10 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <span className="text-xs font-mono text-accent-blue mb-3 block uppercase tracking-wider">{project.type}</span>
-                    <h3 className="text-2xl font-bold text-white">{project.title}</h3>
-                  </div>
-                  <div className="flex gap-3 text-neutral-400">
-                    <a href={project.github} className="hover:text-white transition-colors"><GithubIcon className="w-5 h-5" /></a>
-                    <a href={project.link} className="hover:text-white transition-colors"><ArrowUpRight className="w-6 h-6" /></a>
-                  </div>
-                </div>
-                
-                {/* Usando a 'solution' no lugar da antiga 'description' */}
-                <p className="text-neutral-400 mb-8 leading-relaxed flex-grow">
-                  {project.solution}
-                </p>
-                
-                {/* Stack */}
-                <div className="flex flex-wrap gap-2 mt-auto pt-6 border-t border-border/40">
-                  {project.stack.map(tech => (
-                    <span key={tech} className="px-3 py-1 text-xs font-medium rounded-full bg-background border border-border/60 text-neutral-400">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* Cabeçalho Editorial */}
+        <div className="mb-24 md:mb-32 flex flex-col gap-6 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: cinematicEasing }}
+            className="flex items-center gap-3 text-neutral-500"
+          >
+            <FolderGit2 className="w-4 h-4" />
+            <h1 className="text-xs font-mono tracking-widest uppercase">
+              Índice de Projetos
+            </h1>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: cinematicEasing, delay: 0.1 }}
+            className="text-4xl md:text-6xl font-semibold tracking-tight text-white leading-[1.1]"
+          >
+            Casos de estudo e <br />
+            <span className="font-light italic text-neutral-500">soluções de engenharia.</span>
+          </motion.p>
         </div>
+
+        {/* Estado de Carregamento */}
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-4 w-full">
+            <Loader2 className="w-6 h-6 animate-spin text-neutral-500" />
+            <span className="text-xs font-mono tracking-widest uppercase text-neutral-500">
+              Acedendo ao banco de dados
+            </span>
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="text-center py-20 border border-dashed border-border rounded-2xl bg-surface/10">
+            <p className="text-neutral-500 font-light text-sm">
+              Nenhum projeto registado ou publicado no momento.
+            </p>
+          </div>
+        ) : (
+          /* Grelha Dinâmica de Estudos de Caso Completos */
+          <div className="flex flex-col gap-32 md:gap-48">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.2, ease: cinematicEasing }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start"
+              >
+
+                {/* Visual da Imagem / Mockup */}
+                <div className={`lg:col-span-6 group relative rounded-2xl overflow-hidden bg-surface/30 border border-border aspect-video flex items-center justify-center transition-colors duration-700 hover:bg-surface/50 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+                  {project.image_url && (
+                    <Link href={`/projects/${project.slug}`} className="relative w-full h-full block cursor-pointer">
+                      <Image
+                        src={project.image_url}
+                        alt={project.title}
+                        fill
+                        className="object-contain p-6 md:p-10 transition-transform duration-700 group-hover:scale-[1.01]"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </Link>
+                  )}
+                </div>
+
+                {/* Narrativa Estruturada de Negócio */}
+                <div className={`lg:col-span-6 flex flex-col ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
+
+                  <div className="mb-8">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 block mb-2">
+                      {project.category}
+                    </span>
+                    <h2 className="text-3xl font-semibold tracking-tight text-white flex items-center justify-between w-full">
+                      {project.title}
+                      {project.live_url && (
+                        <a
+                          href={project.live_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-neutral-400 hover:text-white transition-colors"
+                        >
+                          <ArrowUpRight className="w-5 h-5" />
+                        </a>
+                      )}
+                    </h2>
+                  </div>
+
+                  {/* Quatro Pilares da Solução */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 font-light border-l border-border pl-6">
+
+                    {project.problem && (
+                      <div>
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
+                          Problema
+                        </h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed">
+                          {project.problem}
+                        </p>
+                      </div>
+                    )}
+
+                    {project.strategy && (
+                      <div>
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
+                          Estratégia
+                        </h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed">
+                          {project.strategy}
+                        </p>
+                      </div>
+                    )}
+
+                    {project.solution && (
+                      <div>
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
+                          Solução
+                        </h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed">
+                          {project.solution}
+                        </p>
+                      </div>
+                    )}
+
+                    {project.result && (
+                      <div>
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
+                          Resultado
+                        </h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed">
+                          {project.result}
+                        </p>
+                      </div>
+                    )}
+
+                  </div>
+
+                </div>
+
+              </motion.div>
+            ))}
+          </div>
+        )}
 
       </div>
     </div>
