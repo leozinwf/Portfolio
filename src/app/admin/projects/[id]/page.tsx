@@ -105,7 +105,7 @@ export default function EditProjectPage({ params }: PageProps) {
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Link>
         <div className="flex items-center gap-4">
-          <button onClick={handleDelete} className="p-2 border border-red-500/20 text-red-500 bg-red-500/5 hover:bg-red-500/10 rounded-md transition-colors">
+          <button type="button" onClick={handleDelete} title="Eliminar projeto" className="p-2 border border-red-500/20 text-red-500 bg-red-500/5 hover:bg-red-500/10 rounded-md transition-colors">
             <Trash2 className="w-4 h-4" />
           </button>
           <button 
@@ -148,36 +148,48 @@ export default function EditProjectPage({ params }: PageProps) {
             <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Especificações Primárias</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Título do Projeto</label>
-                <input name="title" value={formData.title} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+                <label htmlFor="title" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Título do Projeto</label>
+                <input id="title" name="title" title="Título do projeto" value={formData.title} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
               <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Categoria</label>
-                <input name="category" value={formData.category} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+                <label htmlFor="category" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Categoria</label>
+                <input id="category" name="category" title="Categoria do projeto" placeholder="Ex: Branding, Web, App" value={formData.category} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Slug URL</label>
-                <input name="slug" value={formData.slug} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+                <label htmlFor="slug" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Slug URL</label>
+                <input id="slug" name="slug" value={formData.slug} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
               <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Imagem URL</label>
-                <input name="image_url" value={formData.image_url} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+                <label htmlFor="image_url" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Imagem URL</label>
+                <input id="image_url" name="image_url" value={formData.image_url} onChange={handleChange} required placeholder="https://exemplo.com/imagem.jpg" className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Link de Produção</label>
-              <input name="live_url" value={formData.live_url} onChange={handleChange} className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+              <label htmlFor="live_url" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Link de Produção</label>
+              <input id="live_url" name="live_url" title="Link de produção" value={formData.live_url} onChange={handleChange} placeholder="https://exemplo.com" className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
             </div>
           </div>
 
           <div className="p-8 rounded-2xl border border-border bg-surface/30 space-y-6">
             <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Arquitetura de Caso</h2>
-            <div><label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Problema</label><textarea name="problem" value={formData.problem} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" /></div>
-            <div><label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Estratégia</label><textarea name="strategy" value={formData.strategy} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" /></div>
-            <div><label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Solução</label><textarea name="solution" value={formData.solution} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" /></div>
-            <div><label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Resultado</label><textarea name="result" value={formData.result} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" /></div>
+            <div>
+              <label htmlFor="problem" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Problema</label>
+              <textarea id="problem" name="problem" title="Descreva o problema" placeholder="Descreva o problema abordado pelo projeto" value={formData.problem} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+            </div>
+            <div>
+              <label htmlFor="strategy" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Estratégia</label>
+              <textarea id="strategy" name="strategy" title="Descreva a estratégia" placeholder="Descreva a estratégia adotada" value={formData.strategy} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+            </div>
+            <div>
+              <label htmlFor="solution" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Solução</label>
+              <textarea id="solution" name="solution" title="Descreva a solução" placeholder="Descreva a solução implementada" value={formData.solution} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+            </div>
+            <div>
+              <label htmlFor="result" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Resultado</label>
+              <textarea id="result" name="result" title="Descreva o resultado" placeholder="Descreva os resultados alcançados" value={formData.result} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+            </div>
           </div>
         </form>
       </main>

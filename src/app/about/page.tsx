@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Terminal, Film, Layers } from "lucide-react";
+import { ArrowRight, Terminal, Film, Layers, User } from "lucide-react";
 import Link from "next/link";
 
-// Ícones Sociais (Mantidos e Otimizados)
+// Ícones Sociais
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path></svg>
 );
@@ -19,50 +19,60 @@ const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pt-32 pb-10 relative overflow-hidden bg-background">
+    <div className="min-h-screen pt-24 pb-20 overflow-hidden bg-background">
       
-      {/* Brilho de Fundo Cinematográfico */}
-      <div className="absolute top-0 right-0 w-[80%] h-[60%] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03),transparent_60%)] pointer-events-none -z-10 blur-3xl"></div>
+      {/* =========================================
+          1. HERO & MANIFESTO
+      ========================================= */}
+      <section className="relative max-w-4xl mx-auto text-center px-4 mb-24 z-10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-b from-accent-blue/5 to-transparent pointer-events-none -z-10 blur-3xl"></div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, ease: cinematicEasing }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-surface/40 backdrop-blur-md text-xs font-mono tracking-widest uppercase mb-6"
+        >
+          <User className="w-3.5 h-3.5 text-accent-blue" />
+          <span>O Manifesto</span>
+        </motion.div>
+
+        {/* Ajuste de leading-tight e padding (pb-2) para evitar corte nos ascendentes e descendentes */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.1 }}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight pb-2 text-white"
+        >
+          Engenharia invisível. <br className="hidden md:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-neutral-400 py-1">
+            Impacto absoluto.
+          </span>
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.2 }}
+          className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed space-y-6"
+        >
+          <p>
+            Não encaro a tecnologia apenas como infraestrutura funcional. Encaro-a como o meio mais poderoso de perceção, comunicação e posicionamento estratégico do nosso tempo.
+          </p>
+          <p className="text-base md:text-lg">
+            No estúdio LeozinWF, o objetivo não é entregar ferramentas. É arquitetar ecossistemas digitais onde o desenvolvimento robusto, a direção de arte e a automação de negócios convergem para construir uma autoridade inquestionável.
+          </p>
+        </motion.div>
+      </section>
 
       <div className="container mx-auto px-4 md:px-8 max-w-5xl relative">
         
-        {/* =========================================
-            1. HERO & MANIFESTO
-        ========================================= */}
-        <section className="py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: cinematicEasing }}
-          >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
-              <h2 className="text-xs font-mono tracking-widest uppercase text-neutral-500">
-                O Manifesto
-              </h2>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight mb-10 leading-[1.05] text-white">
-              Engenharia invisível. <br className="hidden md:block" />
-              <span className="font-light italic text-neutral-500">Impacto absoluto.</span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-neutral-400 font-light leading-relaxed max-w-3xl mb-8">
-              Não encaro a tecnologia apenas como infraestrutura funcional. Encaro-a como o meio mais poderoso de perceção, comunicação e posicionamento estratégico do nosso tempo.
-            </p>
-            
-            <p className="text-lg text-neutral-500 leading-relaxed max-w-2xl font-light">
-              No estúdio LeozinWF, o objetivo não é entregar ferramentas. É arquitetar ecossistemas digitais onde o desenvolvimento robusto, a direção de arte e a automação de negócios convergem para construir uma autoridade inquestionável.
-            </p>
-          </motion.div>
-        </section>
-
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10"></div>
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-10"></div>
 
         {/* =========================================
-            2. A FILOSOFIA (GRID ASSIMÉTRICA)
+            2. A FILOSOFIA
         ========================================= */}
-        <section className="py-24">
+        <section className="py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -90,9 +100,9 @@ export default function AboutPage() {
         <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-10"></div>
 
         {/* =========================================
-            3. PILARES DE ENGENHARIA (CARDS PREMIUM)
+            3. PILARES DE ENGENHARIA
         ========================================= */}
-        <section className="py-24">
+        <section className="py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -108,28 +118,25 @@ export default function AboutPage() {
             
             <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
               
-              {/* Card 1 */}
-              <div className="p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] transition-colors">
-                <Layers className="w-6 h-6 text-neutral-500 mb-6" strokeWidth={1.5} />
-                <h3 className="text-xl font-medium text-white mb-4">Direção de Arte Visual</h3>
+              <div className="p-8 md:p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] hover:border-accent-blue/30 transition-all duration-300">
+                <Layers className="w-6 h-6 text-accent-blue mb-6" strokeWidth={1.5} />
+                <h3 className="text-xl font-medium text-white mb-4 leading-tight">Direção de Arte Visual</h3>
                 <p className="text-neutral-400 font-light leading-relaxed text-base">
                   Antes da primeira linha de código, definimos a identidade. O design não é cosmético; é uma ferramenta psicológica de retenção e posicionamento *premium* da sua marca.
                 </p>
               </div>
 
-              {/* Card 2 */}
-              <div className="p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] transition-colors">
-                <Terminal className="w-6 h-6 text-neutral-500 mb-6" strokeWidth={1.5} />
-                <h3 className="text-xl font-medium text-white mb-4">Engenharia de Produto</h3>
+              <div className="p-8 md:p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] hover:border-accent-purple/30 transition-all duration-300">
+                <Terminal className="w-6 h-6 text-accent-purple mb-6" strokeWidth={1.5} />
+                <h3 className="text-xl font-medium text-white mb-4 leading-tight">Engenharia de Produto</h3>
                 <p className="text-neutral-400 font-light leading-relaxed text-base">
                   Arquitetura de dados escalável, sistemas de alta performance e código sustentável. Construímos infraestruturas preparadas para aguentar o crescimento exponencial do seu negócio.
                 </p>
               </div>
 
-              {/* Card 3 (Ocupa as duas colunas em ecrãs grandes) */}
-              <div className="p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] transition-colors md:col-span-2">
-                <Film className="w-6 h-6 text-neutral-500 mb-6" strokeWidth={1.5} />
-                <h3 className="text-xl font-medium text-white mb-4">Sistemas e Automação Operacional</h3>
+              <div className="p-8 md:p-10 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] hover:border-emerald-500/30 transition-all duration-300 md:col-span-2">
+                <Film className="w-6 h-6 text-emerald-500 mb-6" strokeWidth={1.5} />
+                <h3 className="text-xl font-medium text-white mb-4 leading-tight">Sistemas e Automação Operacional</h3>
                 <p className="text-neutral-400 font-light leading-relaxed text-base max-w-2xl">
                   Sistemas não devem apenas ser bonitos, devem devolver o ativo mais precioso: tempo. Implementamos lógicas de backend e automações invisíveis que removem o atrito operacional, permitindo que a sua equipa se foque na estratégia, e não na operação.
                 </p>
@@ -140,23 +147,23 @@ export default function AboutPage() {
         </section>
 
         {/* =========================================
-            4. CTA FINAL (FOCO EM CONSULTORIA)
+            4. CTA FINAL
         ========================================= */}
         <motion.section 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 1.2, ease: cinematicEasing }}
-          className="py-32 mt-16 text-center border-t border-white/5 relative"
+          className="py-24 md:py-32 mt-8 md:mt-16 text-center border-t border-white/5 relative"
         >
-          {/* Spotlight no CTA */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02),transparent_60%)] pointer-events-none -z-10 blur-3xl rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full bg-gradient-to-t from-accent-blue/5 to-transparent pointer-events-none -z-10 blur-3xl rounded-full"></div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-8 text-white">
+          {/* Ajuste de padding inferior também aqui para os descendentes do span */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-8 text-white leading-tight pb-2">
             Vamos construir o seu <br />
-            <span className="font-light italic text-neutral-500">próximo nível.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue to-accent-purple py-1">próximo nível.</span>
           </h2>
-          <p className="text-neutral-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light">
+          <p className="text-neutral-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Projetos de alta performance exigem uma execução impecável. Reserve uma sessão estratégica e descubra como podemos escalar a sua presença digital.
           </p>
 
@@ -172,13 +179,13 @@ export default function AboutPage() {
             </Link>
             
             <div className="flex items-center gap-3">
-              <a href="https://github.com/SEU_GITHUB" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-all duration-300">
+              <a href="https://github.com/leozinwf" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-blue/50 transition-all duration-300">
                 <GithubIcon className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com/in/SEU_LINKEDIN" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-all duration-300">
+              <a href="https://linkedin.com/in/leonardosabatini" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-blue/50 transition-all duration-300">
                 <LinkedinIcon className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com/SEU_INSTA" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-all duration-300">
+              <a href="https://instagram.com/leozinwf" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.01] flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-purple/50 transition-all duration-300">
                 <InstagramIcon className="w-5 h-5" />
               </a>
             </div>

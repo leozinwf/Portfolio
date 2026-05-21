@@ -99,11 +99,22 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0YEP56CM58"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-0YEP56CM58');
+            `,
+          }}
+        />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans relative min-h-screen bg-background overflow-x-hidden selection:bg-accent-blue/20 flex flex-col`}>
         <div className="bg-noise"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-glow-gradient pointer-events-none -z-10"></div>
-        
+
         {/* A Navbar agora renderiza em todas as páginas */}
         <Navbar />
 
@@ -117,7 +128,7 @@ export default async function RootLayout({
             {children}
           </main>
         )}
-        
+
         {/* O Footer permanece oculto no ecossistema admin */}
         {!isAdminOrLogin && <Footer />}
       </body>

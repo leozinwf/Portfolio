@@ -139,19 +139,28 @@ export default function NewProjectPage() {
             <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Arquitetura de Caso</h2>
             <div>
               <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Problema</label>
-              <textarea name="problem" value={formData.problem} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+              <textarea name="problem" value={formData.problem} onChange={handleChange} rows={3} required title="Problema" placeholder="Descreva o problema identificado..." className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
             </div>
             <div>
               <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Estratégia</label>
-              <textarea name="strategy" value={formData.strategy} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+              <textarea name="strategy" value={formData.strategy} onChange={handleChange} rows={3} required title="Estratégia" placeholder="Descreva a estratégia..." className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
             </div>
             <div>
               <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Solução</label>
-              <textarea name="solution" value={formData.solution} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+              <textarea
+                name="solution"
+                value={formData.solution}
+                onChange={handleChange}
+                rows={3}
+                required
+                title="Solução"
+                placeholder="Descreva a solução proposta..."
+                className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none"
+              />
             </div>
             <div>
               <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Resultado</label>
-              <textarea name="result" value={formData.result} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+              <textarea name="result" value={formData.result} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" placeholder="Descreva os resultados alcançados..." />
             </div>
           </div>
         </form>
