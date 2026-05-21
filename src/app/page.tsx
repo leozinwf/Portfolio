@@ -6,7 +6,6 @@ import Link from "next/link";
 import { TechStack } from "@/components/sections/TechStack";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { CorporateImpact } from "@/components/sections/CorporateImpact";
-import { Timeline } from "@/components/sections/Timeline";
 import { Cta } from "@/components/sections/Cta";
 import { Process } from "@/components/sections/Process";
 import { Services } from "@/components/sections/Services";
@@ -23,73 +22,63 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-40 pb-10 overflow-hidden bg-background">
+    <div className="min-h-screen flex flex-col items-center pt-32 pb-10 bg-background transition-colors duration-500">
 
-      {/* --- HERO SECTION PREMIUM --- */}
-      <div className="flex flex-col items-center text-center px-4 md:px-8 max-w-5xl relative">
+      {/* --- HERO SECTION REFINADA (PREMIUM / ESTRATÉGICA) --- */}
+      <section className="flex flex-col items-center text-center px-6 md:px-8 max-w-4xl relative mb-40">
 
-        {/* Glow de fundo ultrassutil */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03),transparent_70%)] pointer-events-none -z-10 blur-3xl"></div>
-
-        {/* Badge / Kicker */}
+        {/* Badge / Label Estratégico */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: cinematicEasing }}
-          className="px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md text-sm text-neutral-400 mb-10 flex items-center gap-3"
+          transition={{ duration: 0.8, ease: cinematicEasing }}
+          className="mb-8 px-4 py-1.5 rounded-full border border-border bg-surface/50 text-[10px] uppercase tracking-[0.2em] text-neutral-500 font-medium"
         >
-          <Sparkles className="w-4 h-4 text-neutral-500" />
-          <span className="font-medium tracking-widest uppercase text-xs">Digital Creative Studio</span>
+          Creative Technologist • Digital Experience Studio
         </motion.div>
 
-        {/* Headline Forte */}
+        {/* Headline Comercial e Estratégica */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.1 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white mb-8 leading-[1.1] max-w-4xl"
+          transition={{ duration: 1, ease: cinematicEasing, delay: 0.1 }}
+          className="text-5xl md:text-7xl font-semibold tracking-[-0.02em] text-white mb-8 leading-[1.05]"
         >
-          Construímos experiências digitais modernas para marcas que <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-300 to-neutral-600 italic font-light">
-            exigem excelência.
-          </span>
+          Construindo experiências digitais que unem tecnologia, design e estratégia.
         </motion.h1>
 
-        {/* Subheadline Estratégica */}
+        {/* Subheadline (Proposta de Valor clara) */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.2 }}
-          className="text-lg md:text-xl text-neutral-400 max-w-3xl mb-14 leading-relaxed font-light"
+          transition={{ duration: 1, ease: cinematicEasing, delay: 0.2 }}
+          className="text-lg md:text-xl text-neutral-400 max-w-2xl mb-12 leading-relaxed font-light"
         >
-          Unimos engenharia de software, design cinematográfico e estratégia de negócios para criar sites, sistemas e posicionamento visual que geram autoridade imediata.
+          Desenvolvimento de sites, sistemas, branding digital, audiovisual e automações para marcas que querem crescer com presença profissional e identidade forte.
         </motion.p>
 
-        {/* CTAs */}
+        {/* CTAs Premium */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center gap-6 z-10 w-full sm:w-auto"
+          transition={{ duration: 1, ease: cinematicEasing, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
         >
           <Link
             href="/contact"
-            className="group relative px-8 py-4 rounded-full bg-white text-black font-medium hover:bg-neutral-200 transition-all duration-300 flex items-center justify-center gap-3 w-full sm:w-auto overflow-hidden"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-md bg-white text-black font-medium hover:bg-neutral-200 transition-colors duration-300 flex items-center justify-center gap-2"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              Iniciar Projeto
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </span>
+            Iniciar Projeto
           </Link>
 
           <button
             onClick={handleScrollToProjects}
-            className="px-8 py-4 rounded-full border border-white/10 bg-transparent hover:bg-white/5 transition-all duration-300 text-neutral-300 flex items-center justify-center w-full sm:w-auto"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-md border border-border bg-transparent hover:bg-surface transition-colors duration-300 text-neutral-300 flex items-center justify-center gap-2"
           >
-            Explorar Ecossistema
+            Ver Projetos <ArrowRight className="w-4 h-4" />
           </button>
         </motion.div>
-      </div>
+      </section>
 
       {/* --- STACK E DEMAIS SEÇÕES --- */}
       <motion.div

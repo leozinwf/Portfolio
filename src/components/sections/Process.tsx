@@ -1,103 +1,97 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GitBranch, Layout, Cpu, Rocket, Workflow } from "lucide-react";
+import { Workflow } from "lucide-react";
 
 const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
 const steps = [
   {
     id: "01",
-    title: "Discovery & Estratégia",
-    description: "Mapeamento do modelo de negócio, definição da direção criativa e planeamento da arquitetura de software. Nenhuma linha de código é escrita sem um propósito comercial claro.",
-    icon: <GitBranch className="w-5 h-5" />
+    title: "Diagnóstico",
+    description: "Entendimento do projeto, objetivo e necessidades.",
   },
   {
     id: "02",
-    title: "Design & Narrativa Visual",
-    description: "Criação de interfaces imersivas e fluxos de utilizador de alta conversão. Aplicamos tipografia rigorosa e animações fluidas para transmitir uma estética de luxo digital.",
-    icon: <Layout className="w-5 h-5" />
+    title: "Estratégia",
+    description: "Definição da direção visual, tecnológica e estrutural.",
   },
   {
     id: "03",
-    title: "Engenharia & Automação",
-    description: "Desenvolvimento full-stack robusto. Construímos a infraestrutura com React e Supabase, integrando robôs de análise e automações que substituem processos manuais.",
-    icon: <Cpu className="w-5 h-5" />
+    title: "Desenvolvimento",
+    description: "Construção da experiência digital.",
   },
   {
     id: "04",
-    title: "Escala & Otimização",
-    description: "Testes de performance, deploy em cloud e monitorização contínua. O ecossistema é entregue preparado para lidar com elevado tráfego e pronto para evoluir.",
-    icon: <Rocket className="w-5 h-5" />
-  }
+    title: "Refinamento",
+    description: "Ajustes, otimizações e melhorias.",
+  },
+  {
+    id: "05",
+    title: "Entrega",
+    description: "Deploy, suporte e evolução contínua.",
+  },
 ];
 
 export function Process() {
   return (
-    <section className="py-32 md:py-40 w-full relative bg-background border-t border-border">
-      <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+    <section className="py-32 md:py-48 w-full relative bg-background border-t border-border overflow-hidden">
+      <div className="container mx-auto px-6 md:px-8 max-w-6xl">
         
-        <div className="text-center mb-24">
+        {/* Cabeçalho Estrutural */}
+        <div className="mb-24 md:mb-36 flex flex-col gap-6">
           <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: cinematicEasing }}
+            className="flex items-center gap-3 text-neutral-500"
+          >
+            <Workflow className="w-4 h-4" />
+            <h2 className="text-xs font-mono tracking-widest uppercase">
+              Estrutura Operacional
+            </h2>
+          </motion.div>
+          
+          <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: cinematicEasing }}
-            className="flex items-center justify-center gap-3 mb-6"
-          >
-            <Workflow className="w-4 h-4 text-neutral-500" />
-            <h2 className="text-xs font-mono tracking-widest uppercase text-neutral-500">
-              Metodologia de Elite
-            </h2>
-          </motion.div>
-          <motion.h3
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, delay: 0.1, ease: cinematicEasing }}
+            transition={{ duration: 1, ease: cinematicEasing, delay: 0.1 }}
             className="text-4xl md:text-5xl font-semibold tracking-tight text-white"
           >
-            Engenharia de <span className="font-light italic text-neutral-500">ponta a ponta.</span>
+            Metodologia baseada em <br />
+            <span className="font-light italic text-neutral-500">previsibilidade e excelência.</span>
           </motion.h3>
         </div>
 
-        <div className="relative">
-          {/* Linha vertical de conexão - Agora usa via-border para ser visível em ambos os modos */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-border to-transparent -translate-x-1/2" />
+        {/* Grelha de Engenharia (Inspirada no design de documentação/recursos da Linear e Vercel) */}
+        <div className="grid grid-cols-1 md:grid-cols-5 border-t border-border divide-y md:divide-y-0 md:divide-x divide-border">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 1, delay: index * 0.1, ease: cinematicEasing }}
+              className="pt-10 pb-12 md:pb-0 md:px-6 first:pl-0 last:pr-0 flex flex-col gap-8 group"
+            >
+              {/* Indicador Minimalista Estilo Code-Comment */}
+              <span className="font-mono text-xs tracking-wider text-neutral-500 group-hover:text-white transition-colors duration-300">
+                // {step.id}
+              </span>
 
-          <div className="flex flex-col gap-16 md:gap-24">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, delay: 0.2, ease: cinematicEasing }}
-                className={`flex flex-col md:flex-row items-center gap-8 md:gap-16 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-              >
-                
-                {/* Espaçador para manter alinhamento central em ecrãs grandes */}
-                <div className="hidden md:block flex-1" />
-
-                {/* Nó central (Círculo do ícone) - Ajustado para bg-surface e border-border */}
-                <div className="relative z-10 flex items-center justify-center w-12 h-12 rounded-full border border-border bg-surface text-neutral-400 shrink-0 shadow-sm">
-                  {step.icon}
-                </div>
-
-                {/* Conteúdo do Card - Ajustado para bg-surface/30 */}
-                <div className="flex-1 w-full">
-                  <div className={`p-8 rounded-2xl border border-border bg-surface/30 hover:border-neutral-400/30 transition-colors duration-500 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'} text-center md:text-left`}>
-                    <span className="text-xs font-mono text-neutral-500 mb-3 block">Fase {step.id}</span>
-                    <h4 className="text-xl font-medium text-white mb-4">{step.title}</h4>
-                    <p className="text-neutral-400 font-light leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-
-              </motion.div>
-            ))}
-          </div>
+              {/* Bloco de Informação Puro */}
+              <div className="space-y-3">
+                <h4 className="text-lg font-medium tracking-tight text-white">
+                  {step.title}
+                </h4>
+                <p className="text-neutral-400 font-light text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
       </div>
