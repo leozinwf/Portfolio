@@ -1,69 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Globe, MonitorSmartphone, Video, Workflow, Check } from "lucide-react";
+import { MonitorSmartphone, Code2, Video, Workflow } from "lucide-react";
 
 const services = [
   {
     id: 1,
-    title: "Posicionamento Digital",
-    description: "Google Meu Negócio, identidade online, presença profissional e branding visual para destacar sua marca no mercado.",
-    icon: <Globe className="w-6 h-6" />,
+    title: "Engenharia Web & Sistemas",
+    description: "Landing pages de alta conversão, plataformas SaaS e dashboards gerenciais desenvolvidos com performance impecável e arquitetura escalável.",
+    icon: <Code2 className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
     id: 2,
-    title: "Desenvolvimento Web & Sistemas",
-    description: "Landing pages de alta conversão, sistemas personalizados, plataformas SaaS, automações e dashboards gerenciais.",
-    icon: <MonitorSmartphone className="w-6 h-6" />,
+    title: "Posicionamento & Branding",
+    description: "Estruturação de identidade online, presença profissional corporativa e design visual focado inteiramente na perceção de alto valor da sua marca.",
+    icon: <MonitorSmartphone className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
     id: 3,
-    title: "Audiovisual & Conteúdo",
-    description: "Vídeos comerciais, reels de alto impacto, cinematografia, motion design e efeitos visuais (VFX) que retêm a atenção.",
-    icon: <Video className="w-6 h-6" />,
+    title: "Audiovisual & Motion",
+    description: "Narrativas visuais, vídeos comerciais, motion design e efeitos cinematográficos projetados para reter a atenção e engajar o seu público-alvo.",
+    icon: <Video className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
     id: 4,
-    title: "Estratégia & Performance",
-    description: "Automação de processos, organização digital, engenharia de experiência do usuário (UX) e otimização de fluxos de trabalho.",
-    icon: <Workflow className="w-6 h-6" />,
+    title: "Estratégia & Automação",
+    description: "Engenharia de experiência do utilizador (UX), otimização de fluxos de trabalho e sistemas invisíveis que automatizam e escalam a sua operação.",
+    icon: <Workflow className="w-6 h-6" strokeWidth={1.5} />,
   }
 ];
 
 const deliverables = [
-  "Landing pages", "Sistemas internos", "SaaS", "Dashboards",
-  "Portais", "Sites institucionais", "Automação RPA", "Branding digital",
-  "Vídeos comerciais", "Motion design", "Estrutura visual para marcas"
+  "Landing Pages", "SaaS", "Dashboards", "Portais Corporativos",
+   "Motion Design", "Branding Digital", "E-commerce Premium"
 ];
 
 export function Services() {
   return (
-    <section className="py-32 w-full relative bg-background border-y border-white/5">
+    <section className="py-32 md:py-40 w-full relative bg-background border-y border-white/5">
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
         
         {/* Cabeçalho */}
         <div className="mb-20 md:mb-28 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="flex items-center gap-3 mb-6"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
+            <h2 className="text-xs font-mono tracking-widest uppercase text-neutral-500">
+              Expertise
+            </h2>
+          </motion.div>
+
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
+            className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6"
           >
-            Serviços <span className="font-light italic text-neutral-500">Premium.</span>
+            Arquitetura de <span className="font-light italic text-neutral-500">Valor.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.1 }}
-            className="text-neutral-400 text-lg md:text-xl font-light"
+            className="text-neutral-400 text-lg md:text-xl font-light leading-relaxed"
           >
-            Não entrego apenas código ou vídeos. Desenvolvo a estrutura completa para que sua marca tenha uma presença digital inquestionável.
+            Não entregamos apenas código ou vídeos. Desenvolvemos a infraestrutura completa para que a sua marca domine o ambiente digital e gere autoridade instantânea.
           </motion.p>
         </div>
 
         {/* Grid de Serviços */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-32">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
@@ -71,34 +82,36 @@ export function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: index * 0.1, duration: 0.7 }}
-              className="group p-10 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all duration-500"
+              className="group p-10 md:p-12 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-all duration-500"
             >
-              <div className="mb-8 text-neutral-300 group-hover:text-white transition-colors">
+              <div className="mb-8 text-neutral-500 group-hover:text-white transition-colors duration-500">
                 {service.icon}
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-4">
+              <h3 className="text-2xl font-medium text-white mb-4">
                 {service.title}
               </h3>
-              <p className="text-neutral-400 leading-relaxed font-light">
+              <p className="text-neutral-400 leading-relaxed font-light text-base md:text-lg">
                 {service.description}
               </p>
             </motion.div>
           ))}
         </div>
 
-        {/* O que eu posso construir */}
+        {/* O que construímos - Visual Pílulas Minimalistas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="p-10 md:p-16 rounded-[2.5rem] bg-neutral-900/50 border border-white/10"
+          className="flex flex-col items-center text-center"
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">O que eu construo</h3>
-          <div className="flex flex-wrap justify-center gap-4">
+          <h3 className="text-sm font-mono tracking-widest uppercase text-neutral-500 mb-8">O que nós construímos</h3>
+          <div className="flex flex-wrap justify-center gap-3 max-w-4xl">
             {deliverables.map((item, i) => (
-              <div key={i} className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/10 bg-black/20 text-neutral-300 text-sm">
-                <Check className="w-4 h-4 text-neutral-500" />
-                <span>{item}</span>
+              <div 
+                key={i} 
+                className="px-6 py-2.5 rounded-full border border-white/10 bg-white/[0.02] text-neutral-300 text-sm font-light tracking-wide hover:bg-white/[0.05] transition-colors cursor-default"
+              >
+                {item}
               </div>
             ))}
           </div>

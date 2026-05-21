@@ -1,53 +1,51 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Cpu } from "lucide-react";
 
-// Lista de tecnologias (ajuste como preferir)
-const stackItems = [
-  "Next.js",
-  "TypeScript",
-  "React",
-  "Tailwind CSS",
-  "Supabase",
-  "Framer Motion",
-  "SQL Server",
-  "RPA",
-  "UI/UX Design",
-  "Photoshop"
+const technologies = [
+  "React 19", "Next.js", "TypeScript", "Node.js", 
+  "Supabase", "Tailwind CSS", "Framer Motion", "Vite",
+  "Adobe Suite", "Blender 3D", "Figma"
 ];
 
 export function TechStack() {
-  // Duplicamos o array para criar a ilusão de um loop infinito contínuo
-  const duplicatedStack = [...stackItems, ...stackItems];
-
   return (
-    <section className="py-12 w-full overflow-hidden relative border-y border-border/40 bg-surface/20 mt-20">
-      
-      {/* Máscaras de gradiente nas bordas para dar um efeito "fade" suave nas laterais */}
-      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
-
-      <div className="flex w-fit">
+    <section className="py-24 w-full relative bg-background border-t border-white/5">
+      <div className="container mx-auto px-4 md:px-8 max-w-6xl text-center">
+        
         <motion.div
-          className="flex gap-8 px-4"
-          animate={{
-            x: ["0%", "-50%"],
-          }}
-          transition={{
-            duration: 20, // Tempo que leva para dar a volta (aumente para mais lento)
-            ease: "linear",
-            repeat: Infinity,
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col items-center justify-center mb-12"
         >
-          {duplicatedStack.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center px-6 py-3 bg-surface/50 border border-border/50 rounded-xl backdrop-blur-sm whitespace-nowrap text-sm font-medium text-neutral-300 hover:text-white hover:border-accent-blue/50 transition-colors cursor-default"
+          <Cpu className="w-6 h-6 text-neutral-500 mb-6" strokeWidth={1.5} />
+          <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+            Infraestrutura Moderna
+          </h2>
+          <p className="text-neutral-400 font-light max-w-2xl">
+            As nossas plataformas são construídas sobre um ecossistema de ponta, focado rigorosamente na performance, escalabilidade e numa experiência visual imersiva.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 1 }}
+          className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto"
+        >
+          {technologies.map((tech, i) => (
+            <div 
+              key={i} 
+              className="px-6 py-3 rounded-full border border-white/5 bg-white/[0.01] text-neutral-400 text-sm font-mono tracking-wide hover:bg-white/[0.03] hover:text-white hover:border-white/10 transition-all duration-300 cursor-default"
             >
-              {item}
+              {tech}
             </div>
           ))}
         </motion.div>
+
       </div>
     </section>
   );
