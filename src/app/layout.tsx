@@ -85,7 +85,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className="scroll-smooth" data-scroll-behavior="smooth">
+    <html lang="pt-BR" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/* Script de execução imediata: Lê o localStorage antes da renderização do React */}
         <script

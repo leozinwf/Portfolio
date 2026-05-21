@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GithubIcon } from "@/components/sections/FeaturedProjects"; 
+import { GithubIcon } from "@/components/ui/icons";
 import { ArrowUpRight } from "lucide-react";
 import { featuredProjects } from "@/data/projects";
 

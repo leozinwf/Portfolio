@@ -9,6 +9,7 @@
   
   --color-accent-blue: var(--accent-blue);
   --color-accent-purple: #8b5cf6;
+  --color-accent-orange: var(--accent-orange); /* Nova cor adicionada ao tema */
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -24,32 +25,47 @@
   --background: #ffffff;
   --surface: #f4f4f5; /* zinc-100 */
   --border: #e4e4e7;  /* zinc-200 */
+  
+  /* Cores de Destaque */
   --accent-blue: #2563eb;
+  --accent-orange: #ea580c; /* Laranja premium modo claro */
+  
   --glow-color: rgba(37, 99, 235, 0.05);
   --noise-opacity: 0.012;
 
   /* Variáveis Dinâmicas para mapear classes utilitárias legadas */
-  --text-main-dynamic: #09090b;       /* Substitui text-white no modo claro */
-  --text-muted-dynamic: #4a4a4e;      /* Substitui text-neutral-400 no modo claro */
-  --text-accent-dynamic: #27272a;     /* Substitui text-neutral-300 no modo claro */
+  --text-main-dynamic: #09090b;       
+  --text-muted-dynamic: #4a4a4e;      
+  --text-accent-dynamic: #27272a;     
   --card-inner-bg: #ffffff;
 }
 
 /* ==========================================================================
-   PALETA DARK MODE (Soft Graphite - Sem Preto Puro para Evitar Vertigem)
+   PALETA DARK MODE (Midnight Blue & Orange - Profundo e Cinematográfico)
    ========================================================================== */
 .dark {
-  --background: #0f1117; 
-  --surface: #1e212b;    
-  --border: #333847;     
+  /* Fundo azul noturno profundo (tira o aspeto "vazio" do preto) */
+  --background: #0b1221; 
+  /* Paineis com um tom azul-ardósia ligeiramente mais claro */
+  --surface: #151e32;    
+  /* Bordas num azul acinzentado muito subtil */
+  --border: #26334d;     
+  
+  /* Cores de Destaque */
   --accent-blue: #3b82f6;
-  --glow-color: rgba(59, 130, 246, 0.15);
+  --accent-orange: #f97316; /* Laranja vibrante para detalhes pontuais */
+  
+  /* Glow no fundo ganha um tom azul mais misturado */
+  --glow-color: rgba(59, 130, 246, 0.12);
   --noise-opacity: 0.015;
 
+  /* Textos mantêm a legibilidade com tons levemente azulados/frios */
   --text-main-dynamic: #f8fafc;       
   --text-muted-dynamic: #94a3b8;      
   --text-accent-dynamic: #cbd5e1;     
-  --card-inner-bg: #0b0d12;
+  
+  /* Fundo interno de mockups ou elementos em destaque */
+  --card-inner-bg: #0f172a;
 }
 
 /* Estilos Globais Base */
@@ -59,31 +75,31 @@
     color: var(--text-main-dynamic);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Transição suave ao clicar no botão */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    /* Transição suave ao trocar de temas */
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
   }
   
   /* Sincronização automatizada das classes text-utilitárias do projeto */
   h1, h2, h3, h4, .text-white {
     color: var(--text-main-dynamic) !important;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease;
   }
   
   p, .text-neutral-400 {
     color: var(--text-muted-dynamic) !important;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease;
   }
   
   .text-neutral-300 {
     color: var(--text-accent-dynamic) !important;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease;
   }
 
   /* Inversão inteligente do botão principal de CTA */
   .bg-white {
     background-color: var(--text-main-dynamic) !important;
     color: var(--background) !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
   
   .bg-white .text-black, .text-black {
@@ -112,6 +128,6 @@
   pointer-events: none;
   z-index: 50;
   opacity: var(--noise-opacity);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }

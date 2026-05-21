@@ -1,165 +1,172 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, FolderGit2 } from "lucide-react";
 import Image from "next/image";
-import { featuredProjects } from "@/data/projects";
+import Link from "next/link";
 
-// Ícone do GitHub (mantido o SVG customizado para leveza)
-export const GithubIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4" />
-  </svg>
-);
+const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
-const cinematicEasing: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const cases = [
+  {
+    id: "grana-xp",
+    title: "Grana XP",
+    category: "SaaS Financeiro & Gamificação",
+    year: "2026",
+    challenge: "Transformar a gestão financeira pessoal num ecossistema envolvente, fugindo da rigidez das tradicionais folhas de cálculo.",
+    solution: "Desenvolvimento full-stack de uma plataforma web gamificada. Integração de sincronização em tempo real para dados financeiros, arquitetura de interface limpa e mecânicas de recompensa por consistência do utilizador.",
+    impact: "Maior retenção e conversão de rotinas financeiras monótonas em hábitos diários rastreáveis.",
+    tech: ["React", "Supabase", "Tailwind CSS", "Motion"],
+    image: "/projects/grana_xp.webp",
+    link: "/projects/grana-xp"
+  },
+  {
+    id: "doohub",
+    title: "DooHub",
+    category: "Plataforma de Gestão Corporativa",
+    year: "2025",
+    challenge: "Criar um ecossistema centralizado para gestão e automação de processos de negócio, substituindo fluxos manuais dispersos.",
+    solution: "Arquitetura de sistema robusta focada em engenharia de produtividade, painéis gerenciais (dashboards) responsivos e estruturação de bases de dados para processamento em larga escala.",
+    impact: "Redução drástica do tempo operacional na análise de dados e otimização de fluxos de trabalho.",
+    tech: ["Next.js", "TypeScript", "Node.js", "Arquitetura de Dados"],
+    image: "/projects/doohub.webp",
+    link: "/projects/doohub"
+  }
+];
 
 export function FeaturedProjects() {
   return (
-    <section className="py-32 w-full relative">
-      <div className="container mx-auto px-4 md:px-8 max-w-6xl">
-
-        {/* Cabeçalho da Seção com Efeito Reveal */}
-        <div className="mb-20">
-          <motion.h2
-            initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    <section className="py-32 md:py-40 w-full relative bg-background overflow-hidden border-t border-border/40 transition-colors duration-500">
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+        
+        {/* Cabeçalho */}
+        <div className="mb-24 md:mb-32 flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: cinematicEasing }}
+              className="flex items-center gap-3 mb-6 opacity-60"
+            >
+              <FolderGit2 className="w-4 h-4" />
+              <h2 className="text-xs font-mono tracking-widest uppercase">
+                Casos de Estudo
+              </h2>
+            </motion.div>
+            
+            {/* O texto agora herda o default do site (preto no claro, branco no escuro) */}
+            <motion.h3 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, delay: 0.1, ease: cinematicEasing }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]"
+            >
+              Projetos que geram <br className="hidden md:block" />
+              <span className="font-light italic opacity-60">autoridade e conversão.</span>
+            </motion.h3>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: cinematicEasing }}
-            className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6"
+            transition={{ duration: 1.2, delay: 0.2, ease: cinematicEasing }}
           >
-            Cases de <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue to-accent-purple">Sucesso</span>.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, delay: 0.1, ease: cinematicEasing }}
-            className="text-neutral-400 text-lg md:text-xl max-w-2xl leading-relaxed"
-          >
-            Não apenas linhas de código, mas produtos desenhados para resolver problemas reais com excelência visual e técnica.
-          </motion.p>
+            <Link 
+              href="/projects" 
+              className="group flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity"
+            >
+              <span>Ver todo o arquivo</span>
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </Link>
+          </motion.div>
         </div>
 
-        {/* Layout Split-Screen para os Projetos */}
-        <div className="flex flex-col gap-24 md:gap-32">
-          {featuredProjects.map((project: any, index) => {
-            // Alterna a direção da imagem (esquerda/direita) a cada projeto no desktop
-            const isEven = index % 2 === 0;
+        {/* Lista de Casos de Estudo */}
+        <div className="flex flex-col gap-32 md:gap-40">
+          {cases.map((project, index) => (
+            <motion.div 
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: cinematicEasing }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center"
+            >
+              
+              {/* === CONTAINER DA IMAGEM AGORA USA bg-surface === */}
+              {/* Usa a variável --surface do seu globals.css para ficar perfeito em ambos os temas */}
+              <div className={`lg:col-span-7 group relative rounded-[2rem] overflow-hidden bg-surface border border-border/50 shadow-2xl shadow-black/5 aspect-video md:aspect-[4/3] flex items-center justify-center transition-all duration-500 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+                <Image
+                  src={project.image}
+                  alt={`Imagem do caso de estudo: ${project.title}`}
+                  fill
+                  className="object-contain p-6 md:p-12 filter transition-all duration-700 group-hover:scale-105 group-hover:opacity-90"
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  priority={index === 0}
+                />
+                <div className="absolute inset-0 border border-border/20 rounded-[2rem] pointer-events-none transition-colors duration-500"></div>
+              </div>
 
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.4, ease: cinematicEasing }}
-                className={`group flex flex-col gap-8 lg:gap-16 items-center ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
-              >
+              {/* Informação e Narrativa do Caso */}
+              <div className={`lg:col-span-5 flex flex-col ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="px-3 py-1 text-xs font-mono border border-border/50 rounded-full opacity-70">
+                    {project.year}
+                  </span>
+                  <span className="text-xs font-mono uppercase tracking-widest opacity-60">
+                    {project.category}
+                  </span>
+                </div>
 
-                {/* LADO A: O Visual (Mockup) */}
-                <div className="w-full lg:w-1/2 h-[350px] sm:h-[450px] rounded-[32px] p-4 relative overflow-hidden bg-surface/20 border border-border/40 hover:border-accent-blue/30 transition-colors duration-500">
-                  {/* Gradiente de fundo reagindo ao hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 group-hover:opacity-60 transition-opacity duration-700`}></div>
+                <h4 className="text-3xl md:text-4xl font-bold mb-10">
+                  {project.title}
+                </h4>
 
-                  {/* A "Interface" flutuando */}
-                  <div className="absolute inset-4 md:inset-8 bg-background/80 overflow-hidden border border-border/50 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:-translate-y-3 group-hover:scale-[1.02] transition-all duration-700 ease-out">
-                    {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={`Mockup demonstrativo da interface do projeto ${project.title}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        quality={85}
-                        className="object-contain object-center p-2"
-                        priority={index <= 1}
-                      />
-                    ) : (
-                      <span className="text-neutral-600 font-mono text-sm tracking-widest uppercase">Mockup / Produto</span>
-                    )}
+                <div className="space-y-8 mb-10">
+                  <div>
+                    <h5 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent-blue opacity-80"></div> O Desafio
+                    </h5>
+                    <p className="opacity-70 font-light leading-relaxed">
+                      {project.challenge}
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h5 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent-purple opacity-80"></div> A Solução & Impacto
+                    </h5>
+                    <p className="opacity-70 font-light leading-relaxed">
+                      {project.solution} <span className="opacity-100 font-medium ml-1">{project.impact}</span>
+                    </p>
                   </div>
                 </div>
 
-                {/* LADO B: O Business Case */}
-                <div className="w-full lg:w-1/2 flex flex-col">
-                  {/* Tag Premium */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="px-4 py-1.5 text-xs font-mono tracking-widest uppercase text-accent-blue bg-accent-blue/10 border border-accent-blue/20 rounded-full">
-                      {project.type}
-                    </span>
-                  </div>
-
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-400 transition-all duration-500">
-                    {project.title}
-                  </h3>
-
-                  {/* Blocos de Desafio e Solução */}
-                  <div className="space-y-6 mb-8">
-                    <div>
-                      <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
-                        O Desafio
-                      </h4>
-                      <p className="text-neutral-400 leading-relaxed text-sm md:text-base">
-                        {project.problem}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                        A Solução
-                      </h4>
-                      <p className="text-neutral-400 leading-relaxed text-sm md:text-base">
-                        {project.solution}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Highlights */}
-                  <ul className="flex flex-col gap-3 mb-10">
-                    {project.features.map((feature: string) => (
-                      <li key={feature} className="flex items-start gap-3 text-neutral-300 text-sm">
-                        <CheckCircle2 className="w-5 h-5 text-accent-blue shrink-0 opacity-80" />
-                        {feature}
-                      </li>
+                {/* Tecnologias & CTA */}
+                <div className="pt-8 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((t) => (
+                      <span key={t} className="text-xs font-mono opacity-60">
+                        {t} <span className="opacity-40 last:hidden px-1">/</span>
+                      </span>
                     ))}
-                  </ul>
-
-                  {/* Footer do Projeto: Stack "Invisível" e Links */}
-                  <div className="mt-auto pt-6 border-t border-border/40 flex flex-wrap items-center justify-between gap-6">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-neutral-500 font-mono uppercase tracking-wider mr-2">Core:</span>
-                      {project.stack.map((tech: string, i: number) => (
-                        <span key={tech} className="text-xs text-neutral-400 font-medium flex items-center">
-                          {tech}
-                          {i !== project.stack.length - 1 && <span className="opacity-30 mx-2">•</span>}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Links com Acessibilidade Otimizada */}
-                    <div className="flex gap-4">
-                      <a
-                        href={project.github}
-                        aria-label={`Ver o código-fonte do projeto ${project.title} no GitHub`}
-                        className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-blue hover:bg-surface transition-all duration-300"
-                      >
-                        <GithubIcon className="w-5 h-5" />
-                      </a>
-                      <a
-                        href={project.link}
-                        aria-label={`Acessar o site de demonstração do projeto ${project.title}`}
-                        className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-neutral-400 hover:text-white hover:border-accent-blue hover:bg-surface transition-all duration-300 group-hover:scale-110"
-                      >
-                        <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
-                      </a>
-                    </div>
                   </div>
-                </div>
 
-              </motion.div>
-            );
-          })}
+                  <Link 
+                    href={project.link}
+                    className="inline-flex items-center gap-2 text-sm font-medium opacity-80 hover:opacity-100 transition-opacity group"
+                  >
+                    Ler Caso Completo
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+
+            </motion.div>
+          ))}
         </div>
 
       </div>

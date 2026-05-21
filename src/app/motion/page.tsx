@@ -14,6 +14,7 @@ const motionCategories = [
     icon: <Film className="w-5 h-5 text-accent-blue" />,
     placeholderText: "[ Seu Showreel / Vídeo Principal aqui ]",
     aspectRatio: "video", // 16:9
+    link: ""
   },
   {
     id: "ui-animation",
@@ -23,6 +24,7 @@ const motionCategories = [
     icon: <MonitorSmartphone className="w-5 h-5 text-accent-purple" />,
     placeholderText: "[ Demonstração de Interface / Screen Recording Animado ]",
     aspectRatio: "video",
+    link: ""
   },
   {
     id: "vfx-graphics",
@@ -32,6 +34,7 @@ const motionCategories = [
     icon: <Sparkles className="w-5 h-5 text-emerald-500" />,
     placeholderText: "[ Experimento de VFX ou Motion Graphics ]",
     aspectRatio: "video",
+    link: ""
   },
   {
     id: "reels-shorts",
@@ -41,6 +44,7 @@ const motionCategories = [
     icon: <Clapperboard className="w-5 h-5 text-orange-500" />,
     placeholderText: "[ Reel / Shorts 9:16 ]",
     aspectRatio: "vertical", // 9:16
+    link: ""
   }
 ];
 

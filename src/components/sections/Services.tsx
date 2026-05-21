@@ -1,92 +1,108 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, LayoutDashboard, Bot, Sparkles } from "lucide-react";
+import { Globe, MonitorSmartphone, Video, Workflow, Check } from "lucide-react";
 
 const services = [
   {
     id: 1,
-    title: "Desenvolvimento Web & Apps",
-    description: "Criação de aplicações full-stack escaláveis e de alta performance utilizando ecossistemas modernos como Next.js, React e Supabase.",
-    icon: <Code2 className="w-6 h-6" />,
-    color: "from-blue-500 to-cyan-500",
+    title: "Posicionamento Digital",
+    description: "Google Meu Negócio, identidade online, presença profissional e branding visual para destacar sua marca no mercado.",
+    icon: <Globe className="w-6 h-6" />,
   },
   {
     id: 2,
-    title: "Dashboards & Interfaces",
-    description: "Sistemas internos e plataformas interativas (incluindo lógicas gamificadas) focadas na melhor experiência do usuário e visualização de dados.",
-    icon: <LayoutDashboard className="w-6 h-6" />,
-    color: "from-purple-500 to-pink-500",
+    title: "Desenvolvimento Web & Sistemas",
+    description: "Landing pages de alta conversão, sistemas personalizados, plataformas SaaS, automações e dashboards gerenciais.",
+    icon: <MonitorSmartphone className="w-6 h-6" />,
   },
   {
     id: 3,
-    title: "Automação (RPA) & Infra",
-    description: "Desenvolvimento de robôs e scripts para automatizar fluxos de trabalho, atuando desde rotinas manuais até etapas críticas de análise de sistemas.",
-    icon: <Bot className="w-6 h-6" />,
-    color: "from-emerald-500 to-teal-500",
+    title: "Audiovisual & Conteúdo",
+    description: "Vídeos comerciais, reels de alto impacto, cinematografia, motion design e efeitos visuais (VFX) que retêm a atenção.",
+    icon: <Video className="w-6 h-6" />,
   },
   {
     id: 4,
-    title: "Motion & UI Design",
-    description: "Interfaces com animações fluidas, transições elegantes e micro-interações que transformam um site comum em um produto digital premium.",
-    icon: <Sparkles className="w-6 h-6" />,
-    color: "from-orange-500 to-red-500",
+    title: "Estratégia & Performance",
+    description: "Automação de processos, organização digital, engenharia de experiência do usuário (UX) e otimização de fluxos de trabalho.",
+    icon: <Workflow className="w-6 h-6" />,
   }
+];
+
+const deliverables = [
+  "Landing pages", "Sistemas internos", "SaaS", "Dashboards",
+  "Portais", "Sites institucionais", "Automação RPA", "Branding digital",
+  "Vídeos comerciais", "Motion design", "Estrutura visual para marcas"
 ];
 
 export function Services() {
   return (
-    <section className="py-24 w-full relative bg-surface/10 border-y border-border/40">
+    <section className="py-32 w-full relative bg-background border-y border-white/5">
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
         
         {/* Cabeçalho */}
-        <div className="text-center mb-16 md:mb-20">
+        <div className="mb-20 md:mb-28 max-w-3xl">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4"
+            className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6"
           >
-            O que eu <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-200 to-neutral-500">entrego</span>.
+            Serviços <span className="font-light italic text-neutral-500">Premium.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.1 }}
-            className="text-neutral-400 text-lg max-w-2xl mx-auto"
+            className="text-neutral-400 text-lg md:text-xl font-light"
           >
-            Soluções completas de ponta a ponta. Do design da interface até a lógica do servidor e automação de processos.
+            Não entrego apenas código ou vídeos. Desenvolvo a estrutura completa para que sua marca tenha uma presença digital inquestionável.
           </motion.p>
         </div>
 
         {/* Grid de Serviços */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-32">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="group relative p-8 rounded-3xl bg-surface/20 border border-border/50 hover:bg-surface/40 transition-all duration-300"
+              transition={{ delay: index * 0.1, duration: 0.7 }}
+              className="group p-10 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all duration-500"
             >
-              {/* Ícone com Glow de fundo */}
-              <div className="mb-6 relative inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-surface border border-border/60 text-white group-hover:scale-110 transition-transform duration-300">
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20 blur-xl group-hover:opacity-40 transition-opacity`}></div>
+              <div className="mb-8 text-neutral-300 group-hover:text-white transition-colors">
                 {service.icon}
               </div>
-
-              {/* Textos */}
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-400 transition-all">
+              <h3 className="text-2xl font-semibold text-white mb-4">
                 {service.title}
               </h3>
-              <p className="text-neutral-400 leading-relaxed">
+              <p className="text-neutral-400 leading-relaxed font-light">
                 {service.description}
               </p>
             </motion.div>
           ))}
         </div>
+
+        {/* O que eu posso construir */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="p-10 md:p-16 rounded-[2.5rem] bg-neutral-900/50 border border-white/10"
+        >
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">O que eu construo</h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            {deliverables.map((item, i) => (
+              <div key={i} className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/10 bg-black/20 text-neutral-300 text-sm">
+                <Check className="w-4 h-4 text-neutral-500" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
       </div>
     </section>
