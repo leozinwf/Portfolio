@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.leozinwf.space'),
   title: {
     default: "Leonardo Sabatini | Engenharia de Produto & Experiência",
     template: "%s | Leonardo Sabatini"
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
   keywords: [
     "Software Engineer Brazil",
     "Remote Full-Stack Developer",
-    "Especialista em RPA",
     "Next.js",
     "React",
     "Supabase",

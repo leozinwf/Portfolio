@@ -18,7 +18,7 @@ const timelineData = [
   {
     id: 3,
     period: "A Profissionalização",
-    role: "Full-Stack & RPA",
+    role: "Full-Stack",
     description: "Foco total na engenharia de software. Criação de interfaces modernas com React e Next.js, além do desenvolvimento de robôs de automação (RPA) para resolver etapas complexas de análise e reduzir falhas operacionais.",
   },
   {

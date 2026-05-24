@@ -110,7 +110,7 @@ export function Navbar() {
             width={36} 
             height={36} 
             className="rounded-lg object-contain dark:invert" 
-            // Obs: Remova a classe 'dark:invert' acima se a sua logo já for escura ou se não quiser inverter a cor no tema claro
+            priority
           />
         </Link>
 
