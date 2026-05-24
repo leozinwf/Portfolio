@@ -46,49 +46,45 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background pt-32 pb-24 transition-colors duration-500">
+    <div className="min-h-screen pt-24 pb-20 overflow-hidden">
       <div className="container mx-auto px-6 md:px-8 max-w-6xl">
 
-        {/* Navegação de Retorno */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: cinematicEasing }}
-          className="mb-12"
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Voltar ao início
-          </Link>
-        </motion.div>
+        {/* --- HERO SECTION CINEMÁTICA --- */}
+        <section className="relative max-w-4xl mx-auto text-center px-4 mb-24 z-10">
+          {/* Efeito Glow no Fundo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-b from-neutral-500/10 to-transparent pointer-events-none -z-10 blur-3xl"></div>
 
-        {/* Cabeçalho Editorial */}
-        <div className="mb-24 md:mb-32 flex flex-col gap-6 max-w-3xl">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: cinematicEasing }}
-            className="flex items-center gap-3 text-neutral-500"
+            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.2, ease: cinematicEasing }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-surface/40 backdrop-blur-md text-xs font-mono tracking-widest uppercase mb-6"
           >
-            <FolderGit2 className="w-4 h-4" />
-            <h1 className="text-xs font-mono tracking-widest uppercase">
-              Índice de Projetos
-            </h1>
+            <FolderGit2 className="w-3.5 h-3.5 text-accent-blue" />
+            <span>Índice de Projetos</span>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: cinematicEasing, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-semibold tracking-tight text-white leading-[1.1]"
+          <motion.h1
+            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.1 }}
+            className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-white"
           >
             Casos de estudo e <br />
-            <span className="font-light italic text-neutral-500">soluções de engenharia.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-neutral-400">
+              soluções de engenharia.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.2 }}
+            className="text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed font-light"
+          >
+            Exploração detalhada da arquitetura, desafios e resultados práticos dos produtos digitais construídos recentemente.
           </motion.p>
-        </div>
+        </section>
 
         {/* Estado de Carregamento */}
         {isLoading ? (

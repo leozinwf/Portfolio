@@ -1,29 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, Loader2, UploadCloud, ImageIcon } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function NewProjectPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    category: "",
-    problem: "",
-    strategy: "",
-    solution: "",
-    result: "",
-    image_url: "",
-    live_url: "",
-    is_published: true,
-    is_featured: false,
+    title: "", slug: "", category: "", problem: "", strategy: "", 
+    solution: "", result: "", image_url: "", live_url: "", 
+    is_published: true, is_featured: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,6 +32,36 @@ export default function NewProjectPage() {
   const generateSlug = () => {
     const slug = formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     setFormData({ ...formData, slug });
+  };
+
+  // Lógica de Upload via Supabase Storage
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const supabase = createClient();
+    
+    // Gera um nome único para o arquivo para evitar conflitos
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `projetos/${fileName}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio') // Nome do seu bucket no Supabase
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from('portfolio').getPublicUrl(filePath);
+      setFormData({ ...formData, image_url: data.publicUrl });
+      setMessage({ type: 'success', text: "Imagem enviada com sucesso!" });
+    } catch (error: any) {
+      setMessage({ type: 'error', text: `Erro no upload: ${error.message}` });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,13 +88,8 @@ export default function NewProjectPage() {
         <Link href="/admin" className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Link>
-        <button 
-          onClick={handleSubmit}
-          disabled={isLoading}
-          className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md flex items-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-70"
-        >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-          Salvar Estudo de Caso
+        <button onClick={handleSubmit} disabled={isLoading || isUploading} className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md flex items-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-70">
+          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Salvar
         </button>
       </header>
 
@@ -87,81 +106,48 @@ export default function NewProjectPage() {
         )}
 
         <form className="space-y-8" onSubmit={handleSubmit}>
-          {/* Configurações de Exibição Dinâmica */}
-          <div className="p-6 rounded-2xl border border-border bg-surface/30 flex flex-col sm:flex-row gap-6 justify-between sm:items-center">
-            <div className="flex items-start gap-3">
-              <input type="checkbox" id="is_featured" checked={formData.is_featured} onChange={() => handleCheckboxChange('is_featured')} className="mt-1 accent-white" />
-              <label htmlFor="is_featured" className="cursor-pointer">
-                <span className="block text-sm font-medium">Destacar na Home Page</span>
-                <span className="block text-xs text-neutral-400 font-light">Se selecionado, o projeto aparecerá na seção principal do teu site.</span>
-              </label>
-            </div>
-            <div className="flex items-start gap-3">
-              <input type="checkbox" id="is_published" checked={formData.is_published} onChange={() => handleCheckboxChange('is_published')} className="mt-1 accent-white" />
-              <label htmlFor="is_published" className="cursor-pointer">
-                <span className="block text-sm font-medium">Publicar no Índice Geral</span>
-                <span className="block text-xs text-neutral-400 font-light">Tornar o projeto visível na página de listagem global de projetos.</span>
-              </label>
-            </div>
-          </div>
-
+           {/* Checkboxes de Exibição omitidos aqui por brevidade, mantenha os seus do código original */}
+           
           <div className="p-8 rounded-2xl border border-border bg-surface/30 space-y-6">
             <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Especificações Primárias</h2>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Título do Projeto</label>
-                <input name="title" value={formData.title} onChange={handleChange} onBlur={generateSlug} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" placeholder="Ex: DooHub" />
+                <input name="title" value={formData.title} onChange={handleChange} onBlur={generateSlug} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
-              <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Categoria</label>
-                <input name="category" value={formData.category} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" placeholder="Ex: SaaS Corporativo" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Slug URL</label>
-                <input name="slug" value={formData.slug} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" placeholder="ex: doohub" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Imagem URL</label>
-                <input name="image_url" value={formData.image_url} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" placeholder="/projects/doohub.webp" />
+                <input name="slug" value={formData.slug} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
               </div>
             </div>
 
+            {/* Novo Campo de Upload de Imagem */}
             <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Link de Produção (Opcional)</label>
-              <input name="live_url" value={formData.live_url} onChange={handleChange} className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" placeholder="https://doohub.app" />
+              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Imagem de Capa</label>
+              <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImageUpload} />
+              
+              <div className="mt-2 flex items-center gap-4">
+                <button 
+                  type="button" 
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="flex items-center gap-2 bg-surface border border-border px-4 py-2.5 rounded-md text-sm hover:bg-neutral-800 transition-colors disabled:opacity-50"
+                >
+                  {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+                  {isUploading ? "Enviando..." : "Fazer Upload da Imagem"}
+                </button>
+                {formData.image_url && <span className="text-xs text-green-400 font-mono flex items-center gap-1"><ImageIcon className="w-3 h-3"/> Imagem anexada</span>}
+              </div>
+              {/* Opcional: Preview da imagem */}
+              {formData.image_url && (
+                <div className="mt-4 relative aspect-video w-full max-w-sm rounded-lg overflow-hidden border border-border">
+                  <Image src={formData.image_url} alt="Preview" fill className="object-cover" />
+                </div>
+              )}
             </div>
-          </div>
 
-          <div className="p-8 rounded-2xl border border-border bg-surface/30 space-y-6">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Arquitetura de Caso</h2>
-            <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Problema</label>
-              <textarea name="problem" value={formData.problem} onChange={handleChange} rows={3} required title="Problema" placeholder="Descreva o problema identificado..." className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
-            </div>
-            <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Estratégia</label>
-              <textarea name="strategy" value={formData.strategy} onChange={handleChange} rows={3} required title="Estratégia" placeholder="Descreva a estratégia..." className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
-            </div>
-            <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Solução</label>
-              <textarea
-                name="solution"
-                value={formData.solution}
-                onChange={handleChange}
-                rows={3}
-                required
-                title="Solução"
-                placeholder="Descreva a solução proposta..."
-                className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Resultado</label>
-              <textarea name="result" value={formData.result} onChange={handleChange} rows={3} required className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" placeholder="Descreva os resultados alcançados..." />
-            </div>
+            {/* Restante dos seus campos (Categoria, Live URL, Arquitetura de caso)... Mantenha como estavam! */}
           </div>
         </form>
       </main>

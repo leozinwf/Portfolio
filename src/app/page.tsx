@@ -10,6 +10,7 @@ import { Cta } from "@/components/sections/Cta";
 import { Process } from "@/components/sections/Process";
 import { Services } from "@/components/sections/Services";
 import { About } from "@/components/sections/About";
+import { Search } from "lucide-react";
 
 const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
@@ -22,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-32 pb-10 bg-background transition-colors duration-500">
+    <div className="min-h-screen flex flex-col items-center pt-32 pb-10  transition-colors duration-500">
 
       {/* --- HERO SECTION REFINADA (PREMIUM / ESTRATÉGICA) --- */}
       <section className="flex flex-col items-center text-center px-6 md:px-8 max-w-4xl relative mb-40">

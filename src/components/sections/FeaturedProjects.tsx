@@ -47,7 +47,7 @@ export function FeaturedProjects() {
   }, []);
 
   return (
-    <section id="featured-projects" className="py-32 md:py-48 w-full relative bg-background border-t border-border overflow-hidden">
+    <section id="featured-projects" className="py-32 md:py-48 w-full relative border-t border-border overflow-hidden">
       <div className="container mx-auto px-6 md:px-8 max-w-6xl">
 
         {/* Cabeçalho da Seção */}

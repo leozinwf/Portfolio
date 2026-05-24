@@ -24,7 +24,7 @@
 :root {
   --background: #ffffff;
   --surface: #f4f4f5; /* zinc-100 */
-  --border: #e4e4e7;  /* zinc-200 */
+  --border: #d4d4d8;  /* zinc-300 (Escurecido para destacar os inputs) */
   
   /* Cores de Destaque */
   --accent-blue: #2563eb;
@@ -35,8 +35,8 @@
 
   /* Variáveis Dinâmicas para mapear classes utilitárias legadas */
   --text-main-dynamic: #09090b;       
-  --text-muted-dynamic: #4a4a4e;      
-  --text-accent-dynamic: #27272a;     
+  --text-muted-dynamic: #52525b; /* zinc-600 (Mais escuro para labels e placeholders) */     
+  --text-accent-dynamic: #3f3f46; /* zinc-700 */     
   --card-inner-bg: #ffffff;
 }
 
@@ -85,7 +85,8 @@
     transition: color 0.4s ease;
   }
   
-  p, .text-neutral-400 {
+  /* ADICIONADO .text-neutral-500 AQUI PARA CORRIGIR AS LABELS */
+  p, .text-neutral-400, .text-neutral-500 {
     color: var(--text-muted-dynamic) !important;
     transition: color 0.4s ease;
   }
@@ -93,6 +94,15 @@
   .text-neutral-300 {
     color: var(--text-accent-dynamic) !important;
     transition: color 0.4s ease;
+  }
+
+  /* FORÇAR CONTRASTE NOS INPUTS (Placeholder e Texto digitado) */
+  input, textarea {
+    color: var(--text-main-dynamic) !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--text-muted-dynamic) !important;
+    opacity: 0.7;
   }
 
   /* Inversão inteligente do botão principal de CTA */

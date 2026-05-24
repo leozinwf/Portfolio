@@ -19,7 +19,7 @@ const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pt-24 pb-20 overflow-hidden bg-background">
+    <div className="min-h-screen pt-24 pb-20 overflow-hidden">
       
       {/* =========================================
           1. HERO & MANIFESTO
