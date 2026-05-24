@@ -25,7 +25,7 @@ export const blogPosts = [
     readTime: "8 min de leitura",
     excerpt: "O passo a passo da descoberta de negócio até a implementação de um motor analítico em lote que mitigou falhas críticas.",
     content: `
-      <p>A maior dificuldade na automação não é escrever o script, é mapear a regra de negócio correta. Neste estudo de caso...</p>
+      <p>A maior dificuldade na automação não é escrever o script, é mapear a regra de negócio correta. Neste Projeto...</p>
     `,
   },
   {

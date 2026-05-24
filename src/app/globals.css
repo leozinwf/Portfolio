@@ -141,3 +141,68 @@
   transition: opacity 0.4s ease;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
+
+/* ==========================================================================
+   REACT QUILL - TEMA DINÂMICO PREMIUM (NOTION STYLE)
+   ========================================================================== */
+/* Bordas principais e tipografia */
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+  border-color: var(--color-border) !important;
+  font-family: var(--font-sans) !important;
+}
+
+/* Fundo da barra de ferramentas (um pouco mais destacado) */
+.ql-toolbar.ql-snow {
+  background-color: var(--color-surface) !important;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+/* Fundo da área de digitação */
+.ql-container.ql-snow {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+
+/* ======= MODO ESCURO ======= */
+/* Cores dos ícones da barra de ferramentas */
+.dark .ql-snow .ql-stroke {
+  stroke: var(--text-muted-dynamic) !important;
+}
+.dark .ql-snow .ql-fill, 
+.dark .ql-snow .ql-stroke.ql-fill {
+  fill: var(--text-muted-dynamic) !important;
+}
+.dark .ql-snow .ql-picker {
+  color: var(--text-muted-dynamic) !important;
+}
+
+/* Hover e estado Ativo nos ícones (Quando passa o mouse) */
+.dark .ql-snow .ql-picker:hover,
+.dark .ql-snow button:hover .ql-stroke,
+.dark .ql-snow button:focus .ql-stroke,
+.dark .ql-snow button.ql-active .ql-stroke {
+  stroke: var(--text-main-dynamic) !important;
+}
+.dark .ql-snow button:hover .ql-fill,
+.dark .ql-snow button.ql-active .ql-fill {
+  fill: var(--text-main-dynamic) !important;
+}
+
+/* Menus Dropdown (Tamanho da Fonte, Cor) */
+.dark .ql-snow .ql-picker-options {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Texto do Placeholder (Ex: "Escreva o artigo...") */
+.dark .ql-editor.ql-blank::before {
+  color: var(--text-muted-dynamic) !important;
+  opacity: 0.5;
+}
+
+/* Garante a cor dos links dentro do editor */
+.dark .ql-editor a {
+  color: var(--color-accent-blue) !important;
+}

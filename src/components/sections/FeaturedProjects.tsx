@@ -8,7 +8,6 @@ import { createClient } from "@/utils/supabase/client";
 
 const cinematicEasing = [0.16, 1, 0.3, 1] as const;
 
-// Definição da estrutura do projeto vinda do banco de dados
 interface Project {
   id: string;
   title: string;
@@ -86,7 +85,7 @@ export function FeaturedProjects() {
         ) : projects.length === 0 ? (
           /* Estado Vazio (Caso não haja projetos publicados) */
           <div className="text-center py-20 border border-dashed border-border rounded-2xl bg-surface/10">
-            <p className="text-neutral-500 font-light text-sm">Nenhum estudo de caso publicado no momento.</p>
+            <p className="text-neutral-500 font-light text-sm">Nenhum Projeto publicado no momento.</p>
           </div>
         ) : (
           /* Lista Dinâmica de Casos de Estudo */
@@ -106,7 +105,7 @@ export function FeaturedProjects() {
                   {project.image_url && (
                     <Image
                       src={project.image_url}
-                      alt={`Estudo de caso: ${project.title}`}
+                      alt={`Projeto: ${project.title}`}
                       fill
                       className="object-contain p-6 md:p-12 transition-transform duration-700 group-hover:scale-[1.01]"
                       sizes="(max-width: 768px) 100vw, 60vw"

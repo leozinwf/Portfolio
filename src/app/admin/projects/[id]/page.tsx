@@ -1,57 +1,70 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Save, Loader2, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Loader2, UploadCloud, ImageIcon, Wand2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => <div className="min-h-[300px] flex items-center justify-center text-neutral-500 text-sm">Carregando editor...</div>
+});
 
-export default function EditProjectPage({ params }: PageProps) {
-  const router = useRouter();
+const quillModules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['link', 'image', 'video'],
+    ['clean']
+  ],
+};
+
+export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [fetching, setFetching] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
+  // Guardamos os dados originais para comparar se houve mudança
+  const [initialData, setInitialData] = useState<any>(null);
+
   const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    category: "",
-    problem: "",
-    strategy: "",
-    solution: "",
-    result: "",
-    image_url: "",
-    live_url: "",
-    is_published: true,
-    is_featured: false,
+    title: "", slug: "", category: "", description: "",
+    problem: "", strategy: "", solution: "", result: "",
+    content: "", image_url: "", live_url: "",
+    is_published: true, is_featured: false,
   });
 
   useEffect(() => {
     async function loadProject() {
       const supabase = createClient();
       const { data, error } = await supabase.from("projects").select("*").eq("id", id).single();
-      
+
       if (!error && data) {
-        setFormData({
-          title: data.title || "",
-          slug: data.slug || "",
-          category: data.category || "",
-          problem: data.problem || "",
-          strategy: data.strategy || "",
-          solution: data.solution || "",
-          result: data.result || "",
-          image_url: data.image_url || "",
-          live_url: data.live_url || "",
-          is_published: data.is_published,
-          is_featured: data.is_featured,
-        });
+        const loadedData = {
+          title: data.title || "", slug: data.slug || "", category: data.category || "",
+          description: data.description || "", problem: data.problem || "",
+          strategy: data.strategy || "", solution: data.solution || "",
+          result: data.result || "", content: data.content || "",
+          image_url: data.image_url || "", live_url: data.live_url || "",
+          is_published: data.is_published ?? true, is_featured: data.is_featured ?? false,
+        };
+        setFormData(loadedData);
+        setInitialData(loadedData); // Salva a cópia
+      } else {
+        setMessage({ type: 'error', text: "Falha ao carregar os dados originais." });
       }
-      setIsLoading(false);
+      setFetching(false);
     }
     loadProject();
   }, [id]);
@@ -60,139 +73,211 @@ export default function EditProjectPage({ params }: PageProps) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCheckboxChange = (name: 'is_published' | 'is_featured') => {
-    setFormData({ ...formData, [name]: !formData[name] });
+  const handleToggle = (field: 'is_published' | 'is_featured') => {
+    setFormData(prev => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleGenerateSlug = () => {
+    if (formData.title) {
+      const slug = formData.title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-');
+      setFormData(prev => ({ ...prev, slug }));
+    }
+  };
+
+  // Verifica se o formulário atual é diferente do original carregado do banco
+  const hasChanges = initialData ? JSON.stringify(formData) !== JSON.stringify(initialData) : false;
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const supabase = createClient();
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `projetos/${fileName}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage.from('portfolio').upload(filePath, file);
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from('portfolio').getPublicUrl(filePath);
+      setFormData(prev => ({ ...prev, image_url: data.publicUrl }));
+      setMessage({ type: 'success', text: "Nova mídia indexada." });
+    } catch (error: any) {
+      setMessage({ type: 'error', text: `Falha no upload: ${error.message}` });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
+    if (!hasChanges) return;
+
+    setIsLoading(true);
     setMessage(null);
 
     const supabase = createClient();
     const { error } = await supabase.from("projects").update(formData).eq("id", id);
 
-    setIsSaving(false);
+    setIsLoading(false);
 
     if (error) {
-      setMessage({ type: 'error', text: `Erro ao atualizar: ${error.message}` });
+      setMessage({ type: 'error', text: `Erro ao salvar: ${error.message}` });
     } else {
-      setMessage({ type: 'success', text: "Projeto atualizado com sucesso!" });
-      setTimeout(() => { router.push("/admin"); }, 1500);
+      setMessage({ type: 'success', text: "Projeto atualizado com sucesso." });
+      setInitialData(formData); // Atualiza a cópia original para o botão desativar de novo
+      setTimeout(() => { router.push("/admin/projects"); }, 1500);
     }
   };
 
-  const handleDelete = async () => {
-    if (confirm("Tens a certeza que queres eliminar permanentemente este projeto?")) {
-      const supabase = createClient();
-      const { error } = await supabase.from("projects").delete().eq("id", id);
-      if (!error) { router.push("/admin"); }
-    }
-  };
-
-  if (isLoading) {
+  if (fetching) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-neutral-500 gap-2 font-mono text-xs">
-        <Loader2 className="w-5 h-5 animate-spin" /> Carregando registro...
+      <div className="min-h-screen flex items-center justify-center text-neutral-500 font-mono text-xs gap-2">
+        <Loader2 className="w-4 h-4 animate-spin" /> Recuperando informações do banco...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20 text-white">
-      <header className="border-b border-border bg-surface/30 px-8 py-4 flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
-        <Link href="/admin" className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Voltar
-        </Link>
-        <div className="flex items-center gap-4">
-          <button type="button" onClick={handleDelete} title="Eliminar projeto" className="p-2 border border-red-500/20 text-red-500 bg-red-500/5 hover:bg-red-500/10 rounded-md transition-colors">
-            <Trash2 className="w-4 h-4" />
-          </button>
-          <button 
-            onClick={handleSubmit} disabled={isSaving}
-            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-md flex items-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-70"
-          >
-            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Salvar Alterações
-          </button>
-        </div>
-      </header>
+    <div className="min-h-screen pt-24 pb-20 transition-colors duration-500">
+      <div className="max-w-3xl mx-auto px-6">
 
-      <main className="container mx-auto px-6 max-w-3xl mt-12">
-        <div className="mb-10">
-          <h1 className="text-3xl font-semibold tracking-tight mb-1">Editar: {formData.title}</h1>
-          <p className="text-neutral-400 font-light text-sm">Modifica os parâmetros estratégicos da publicação.</p>
+        <div className="mb-12">
+          <Link href="/admin/projects" className="text-xs font-mono uppercase text-neutral-500 hover:text-white flex items-center gap-2 mb-6 transition-colors w-fit">
+            <ArrowLeft className="w-4 h-4" /> Voltar à lista
+          </Link>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Editar Projeto</h1>
+          <p className="text-neutral-500 text-sm font-light">Modifique as informações ou expanda a publicação do projeto.</p>
         </div>
 
         {message && (
-          <div className={`p-4 rounded-md mb-8 text-sm font-medium border ${message.type === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>{message.text}</div>
+          <div className={`p-4 rounded-xl mb-8 text-sm font-medium border ${message.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+            {message.text}
+          </div>
         )}
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
-          <div className="p-6 rounded-2xl border border-border bg-surface/30 flex flex-col sm:flex-row gap-6 justify-between sm:items-center">
-            <div className="flex items-start gap-3">
-              <input type="checkbox" id="is_featured" checked={formData.is_featured} onChange={() => handleCheckboxChange('is_featured')} className="mt-1 accent-white" />
-              <label htmlFor="is_featured" className="cursor-pointer">
-                <span className="block text-sm font-medium">Destacar na Home Page</span>
-              </label>
+        <form onSubmit={handleSubmit} className="space-y-10 bg-surface/30 border border-border/40 p-6 md:p-8 rounded-3xl backdrop-blur-xl">
+
+          {/* 01. IDENTIFICAÇÃO PRINCIPAL */}
+          <div className="space-y-5">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 border-b border-border/40 pb-2">01. Identificação & SEO</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Título do Projeto *</label>
+                <input required type="text" name="title" value={formData.title} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all text-white" />
+              </div>
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Slug URL *</label>
+                <div className="flex gap-2">
+                  <input required type="text" name="slug" value={formData.slug} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all text-white" />
+                  <button type="button" onClick={handleGenerateSlug} className="px-3 bg-surface border border-border rounded-xl text-neutral-400 hover:text-white transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Gerar automaticamente do título">
+                    <Wand2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="flex items-start gap-3">
-              <input type="checkbox" id="is_published" checked={formData.is_published} onChange={() => handleCheckboxChange('is_published')} className="mt-1 accent-white" />
-              <label htmlFor="is_published" className="cursor-pointer">
-                <span className="block text-sm font-medium">Publicar no Índice Geral</span>
-              </label>
+            <div>
+              <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Categoria *</label>
+              <input required type="text" name="category" value={formData.category} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all text-white" />
+            </div>
+            <div>
+              <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Descrição Curta (Cards e Home) *</label>
+              <textarea required name="description" rows={2} value={formData.description} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all resize-none text-white" />
             </div>
           </div>
 
-          <div className="p-8 rounded-2xl border border-border bg-surface/30 space-y-6">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Especificações Primárias</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="title" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Título do Projeto</label>
-                <input id="title" name="title" title="Título do projeto" value={formData.title} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
-              </div>
-              <div>
-                <label htmlFor="category" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Categoria</label>
-                <input id="category" name="category" title="Categoria do projeto" placeholder="Ex: Branding, Web, App" value={formData.category} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="slug" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Slug URL</label>
-                <input id="slug" name="slug" value={formData.slug} onChange={handleChange} required className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
-              </div>
-              <div>
-                <label htmlFor="image_url" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Imagem URL</label>
-                <input id="image_url" name="image_url" value={formData.image_url} onChange={handleChange} required placeholder="https://exemplo.com/imagem.jpg" className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
-              </div>
+          {/* 02. ARQUIVOS E ENDEREÇOS */}
+          <div className="space-y-5">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 border-b border-border/40 pb-2">02. Mídias & Conexões</h2>
+            <div>
+              <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">URL de Produção (Live URL)</label>
+              <input type="url" name="live_url" value={formData.live_url} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all" />
             </div>
             <div>
-              <label htmlFor="live_url" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Link de Produção</label>
-              <input id="live_url" name="live_url" title="Link de produção" value={formData.live_url} onChange={handleChange} placeholder="https://exemplo.com" className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-neutral-400" />
+              <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Imagem de Capa</label>
+              <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImageUpload} />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="flex items-center gap-2 bg-surface border border-border/60 px-4 py-2.5 rounded-xl text-xs font-medium hover:text-white hover:border-neutral-400 transition-all disabled:opacity-50 cursor-pointer">
+                  {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />} Alterar Mídia
+                </button>
+                {formData.image_url && <span className="text-xs text-emerald-400 font-mono flex items-center gap-1"><ImageIcon className="w-3.5 h-3.5" /> Link ativo no Storage</span>}
+              </div>
+              {formData.image_url && (
+                <div className="mt-4 relative aspect-video w-full max-w-sm rounded-2xl overflow-hidden border border-border/40 bg-background/40">
+                  <Image src={formData.image_url} alt="Preview" fill className="object-contain p-2" />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="p-8 rounded-2xl border border-border bg-surface/30 space-y-6">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-500 border-b border-border pb-4">Arquitetura de Caso</h2>
-            <div>
-              <label htmlFor="problem" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Problema</label>
-              <textarea id="problem" name="problem" title="Descreva o problema" placeholder="Descreva o problema abordado pelo projeto" value={formData.problem} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
-            </div>
-            <div>
-              <label htmlFor="strategy" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Estratégia</label>
-              <textarea id="strategy" name="strategy" title="Descreva a estratégia" placeholder="Descreva a estratégia adotada" value={formData.strategy} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
-            </div>
-            <div>
-              <label htmlFor="solution" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Solução</label>
-              <textarea id="solution" name="solution" title="Descreva a solução" placeholder="Descreva a solução implementada" value={formData.solution} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
-            </div>
-            <div>
-              <label htmlFor="result" className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Resultado</label>
-              <textarea id="result" name="result" title="Descreva o resultado" placeholder="Descreva os resultados alcançados" value={formData.result} onChange={handleChange} rows={3} className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 resize-none" />
+          {/* 03. CASO DE ESTUDO RESUMIDO */}
+          <div className="space-y-5">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 border-b border-border/40 pb-2">03. Arquitetura de Caso (Resumos)</h2>
+            <div className="grid grid-cols-1 gap-5">
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">O Problema</label>
+                <textarea name="problem" rows={3} value={formData.problem} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all resize-none" />
+              </div>
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">A Estratégia</label>
+                <textarea name="strategy" rows={3} value={formData.strategy} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all resize-none" />
+              </div>
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">A Solução</label>
+                <textarea name="solution" rows={3} value={formData.solution} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all resize-none" />
+              </div>
+              <div>
+                <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">O Resultado</label>
+                <textarea name="result" rows={3} value={formData.result} onChange={handleChange} className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-neutral-400 transition-all resize-none" />
+              </div>
             </div>
           </div>
+
+          {/* 04. PUBLICAÇÃO COMPLETA */}
+          <div className="space-y-5">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 border-b border-border/40 pb-2">04. Publicação Completa</h2>
+            <div>
+              <label className="block text-xs font-mono uppercase text-neutral-500 mb-2">Conteúdo do Artigo / Caso Completo</label>
+              <div className="bg-background/50 rounded-xl overflow-hidden border border-border/40">
+                <ReactQuill
+                  theme="snow"
+                  value={formData.content}
+                  onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                  modules={quillModules}
+                  className="min-h-[300px]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 05. CONFIGURAÇÕES DE VISIBILIDADE */}
+          <div className="space-y-5">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-400 border-b border-border/40 pb-2">05. Status de Exibição</h2>
+            <div className="flex flex-wrap gap-4">
+              <button type="button" onClick={() => handleToggle('is_published')} className={`px-4 py-2.5 rounded-xl border text-xs font-medium transition-all cursor-pointer ${formData.is_published ? 'bg-white text-black border-transparent' : 'border-border/60 text-neutral-500'}`}>
+                {formData.is_published ? "✓ Publicado Ativo" : "Rascunho Oculto"}
+              </button>
+              <button type="button" onClick={() => handleToggle('is_featured')} className={`px-4 py-2.5 rounded-xl border text-xs font-medium transition-all cursor-pointer ${formData.is_featured ? 'bg-white text-black border-transparent' : 'border-border/60 text-neutral-500'}`}>
+                {formData.is_featured ? "★ Destacado na Home" : "Exibição Padrão"}
+              </button>
+            </div>
+          </div>
+
+          {/* BOTÃO DE SALVAR E ATUALIZAR (NO FINAL) */}
+          <div className="pt-8 border-t border-border/40 flex justify-end">
+            <button
+              type="submit"
+              disabled={!hasChanges || isLoading || isUploading}
+              className="bg-white text-black text-sm font-semibold px-8 py-3.5 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+              {hasChanges ? "Salvar Alterações" : "Sem mudanças para salvar"}
+            </button>
+          </div>
+
         </form>
-      </main>
+      </div>
     </div>
   );
 }

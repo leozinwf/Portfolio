@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, FolderGit2, Loader2, ArrowLeft } from "lucide-react";
+import { ArrowUpRight, FolderGit2, Loader2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
@@ -20,6 +20,7 @@ interface Project {
   result: string;
   image_url: string;
   live_url: string;
+  content?: string;
 }
 
 export default function ProjectsPage() {
@@ -46,19 +47,19 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-24 pb-20 overflow-hidden">
+    <div className="min-h-screen pt-24 pb-20 overflow-hidden transition-colors duration-500">
       <div className="container mx-auto px-6 md:px-8 max-w-6xl">
 
         {/* --- HERO SECTION CINEMÁTICA --- */}
         <section className="relative max-w-4xl mx-auto text-center px-4 mb-24 z-10">
           {/* Efeito Glow no Fundo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-b from-neutral-500/10 to-transparent pointer-events-none -z-10 blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-b from-accent-blue/10 to-transparent pointer-events-none -z-10 blur-3xl"></div>
 
           <motion.div
             initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.2, ease: cinematicEasing }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-surface/40 backdrop-blur-md text-xs font-mono tracking-widest uppercase mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-surface/40 backdrop-blur-md text-xs font-mono tracking-widest uppercase mb-6 text-foreground"
           >
             <FolderGit2 className="w-3.5 h-3.5 text-accent-blue" />
             <span>Índice de Projetos</span>
@@ -68,7 +69,7 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-white"
+            className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground"
           >
             Casos de estudo e <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-neutral-400">
@@ -80,7 +81,7 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.4, ease: cinematicEasing, delay: 0.2 }}
-            className="text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed font-light"
+            className="text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed font-light"
           >
             Exploração detalhada da arquitetura, desafios e resultados práticos dos produtos digitais construídos recentemente.
           </motion.p>
@@ -91,7 +92,7 @@ export default function ProjectsPage() {
           <div className="flex flex-col items-center justify-center py-32 gap-4 w-full">
             <Loader2 className="w-6 h-6 animate-spin text-neutral-500" />
             <span className="text-xs font-mono tracking-widest uppercase text-neutral-500">
-              Acedendo ao banco de dados
+              Carregando projetos...
             </span>
           </div>
         ) : projects.length === 0 ? (
@@ -114,14 +115,14 @@ export default function ProjectsPage() {
               >
 
                 {/* Visual da Imagem / Mockup */}
-                <div className={`lg:col-span-6 group relative rounded-2xl overflow-hidden bg-surface/30 border border-border aspect-video flex items-center justify-center transition-colors duration-700 hover:bg-surface/50 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+                <div className={`lg:col-span-6 group relative rounded-3xl overflow-hidden bg-surface/30 border border-border/60 aspect-video flex items-center justify-center transition-all duration-700 hover:border-neutral-500/50 hover:bg-surface/50 shadow-lg ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
                   {project.image_url && (
                     <Link href={`/projects/${project.slug}`} className="relative w-full h-full block cursor-pointer">
                       <Image
                         src={project.image_url}
                         alt={project.title}
                         fill
-                        className="object-contain p-6 md:p-10 transition-transform duration-700 group-hover:scale-[1.01]"
+                        className="object-contain p-6 md:p-10 transition-transform duration-700 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </Link>
@@ -132,33 +133,23 @@ export default function ProjectsPage() {
                 <div className={`lg:col-span-6 flex flex-col ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
 
                   <div className="mb-8">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 block mb-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 block mb-3">
                       {project.category}
                     </span>
-                    <h2 className="text-3xl font-semibold tracking-tight text-white flex items-center justify-between w-full">
+                    <h2 className="text-3xl font-bold tracking-tight text-foreground w-full">
                       {project.title}
-                      {project.live_url && (
-                        <a
-                          href={project.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-neutral-400 hover:text-white transition-colors"
-                        >
-                          <ArrowUpRight className="w-5 h-5" />
-                        </a>
-                      )}
                     </h2>
                   </div>
 
                   {/* Quatro Pilares da Solução */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 font-light border-l border-border pl-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 font-light border-l-2 border-border/60 pl-6 mb-10">
 
                     {project.problem && (
                       <div>
-                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
-                          Problema
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-semibold mb-2">
+                          O Problema
                         </h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed">
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
                           {project.problem}
                         </p>
                       </div>
@@ -166,10 +157,10 @@ export default function ProjectsPage() {
 
                     {project.strategy && (
                       <div>
-                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
-                          Estratégia
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-semibold mb-2">
+                          A Estratégia
                         </h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed">
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
                           {project.strategy}
                         </p>
                       </div>
@@ -177,10 +168,10 @@ export default function ProjectsPage() {
 
                     {project.solution && (
                       <div>
-                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
-                          Solução
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-semibold mb-2">
+                          A Solução
                         </h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed">
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
                           {project.solution}
                         </p>
                       </div>
@@ -188,15 +179,38 @@ export default function ProjectsPage() {
 
                     {project.result && (
                       <div>
-                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-medium mb-1.5">
-                          Resultado
+                        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-semibold mb-2">
+                          O Resultado
                         </h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed">
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
                           {project.result}
                         </p>
                       </div>
                     )}
 
+                  </div>
+
+                  {/* ÁREA DE CALL TO ACTIONS (NOVO) */}
+                  <div className="flex flex-wrap items-center gap-4 pl-6">
+                    {/* Botão de Ver Publicação (Principal) */}
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-sm font-semibold hover:opacity-90 transition-opacity"
+                    >
+                      Ler mais... <ArrowRight className="w-4 h-4" />
+                    </Link>
+
+                    {/* Botão de Live URL (Secundário) */}
+                    {project.live_url && (
+                      <a
+                        href={project.live_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface/30 border border-border/60 text-foreground text-sm font-medium hover:bg-surface hover:border-neutral-500 transition-all"
+                      >
+                        Visitar Projeto <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
 
                 </div>
