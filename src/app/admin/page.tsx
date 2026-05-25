@@ -42,9 +42,7 @@ async function getAnalyticsData(periodDays: string) {
   }
 
   try {
-    // Buscando os 5 relatórios do GA4 em paralelo
     const [mainReport, pagesReport, devicesReport, sourcesReport, countriesReport] = await Promise.all([
-      // 1. Métricas Gerais e Comparativo
       analyticsDataClient.runReport({
         property: `properties/${propertyId}`,
         dateRanges: [
@@ -58,7 +56,6 @@ async function getAnalyticsData(periodDays: string) {
           { name: "averageSessionDuration" },
         ],
       }),
-      // 2. Top 5 Páginas
       analyticsDataClient.runReport({
         property: `properties/${propertyId}`,
         dateRanges: [{ startDate: currentStart, endDate: "today" }],
@@ -66,14 +63,12 @@ async function getAnalyticsData(periodDays: string) {
         metrics: [{ name: "screenPageViews" }],
         limit: 5,
       }),
-      // 3. Dispositivos utilizados
       analyticsDataClient.runReport({
         property: `properties/${propertyId}`,
         dateRanges: [{ startDate: currentStart, endDate: "today" }],
         dimensions: [{ name: "deviceCategory" }],
         metrics: [{ name: "activeUsers" }],
       }),
-      // 4. Origem do Tráfego (Canais de Origem)
       analyticsDataClient.runReport({
         property: `properties/${propertyId}`,
         dateRanges: [{ startDate: currentStart, endDate: "today" }],
@@ -81,7 +76,6 @@ async function getAnalyticsData(periodDays: string) {
         metrics: [{ name: "activeUsers" }],
         limit: 5,
       }),
-      // 5. Localização (Países)
       analyticsDataClient.runReport({
         property: `properties/${propertyId}`,
         dateRanges: [{ startDate: currentStart, endDate: "today" }],
@@ -91,7 +85,6 @@ async function getAnalyticsData(periodDays: string) {
       }),
     ]);
 
-    // Processamento do Relatório 1 (Cards)
     const rows = mainReport[0].rows || [];
     const currentPeriod = rows[0]?.metricValues || [];
     const pastPeriod = rows[1]?.metricValues || [];
@@ -113,19 +106,16 @@ async function getAnalyticsData(periodDays: string) {
     const pastBounceRate = parseFloat(pastPeriod[2]?.value || "0") * 100;
     const avgSessionSeconds = parseFloat(currentPeriod[3]?.value || "0");
 
-    // Processamento do Relatório 2 (Páginas)
     const topPages = (pagesReport[0].rows || []).map(row => ({
       path: row.dimensionValues?.[0]?.value || "/",
       views: parseInt(row.metricValues?.[0]?.value || "0").toLocaleString("pt-BR")
     }));
 
-    // Processamento do Relatório 3 (Dispositivos)
     const topDevices = (devicesReport[0].rows || []).map(row => ({
       name: row.dimensionValues?.[0]?.value || "Desconhecido",
       users: parseInt(row.metricValues?.[0]?.value || "0")
     }));
 
-    // Processamento do Relatório 4 (Origem do Tráfego)
     const topSources = (sourcesReport[0].rows || []).map(row => {
       let sourceName = row.dimensionValues?.[0]?.value || "Direto";
       if (sourceName === "(direct)") sourceName = "Acesso Direto";
@@ -135,7 +125,6 @@ async function getAnalyticsData(periodDays: string) {
       };
     });
 
-    // Processamento do Relatório 5 (Países)
     const topCountries = (countriesReport[0].rows || []).map(row => ({
       name: row.dimensionValues?.[0]?.value || "Desconhecido",
       users: parseInt(row.metricValues?.[0]?.value || "0").toLocaleString("pt-BR")
@@ -196,7 +185,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center border-b border-border/10 pb-6">
         <div>
           <h2 className="text-2xl font-bold text-white">Visão Geral</h2>
-          <p className="text-sm text-neutral-400 mt-1">Acompanhe o desempenho do seu portfólio em tempo real.</p>
+          <p className="text-sm text-neutral-500 mt-1">Acompanhe o desempenho do seu portfólio em tempo real.</p>
         </div>
         
         <DateFilter />
@@ -240,7 +229,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             {topPages.length > 0 ? (
               topPages.map((page) => (
                 <div key={page.path} className="flex items-center justify-between text-sm">
-                  <span className="font-mono text-neutral-300 truncate max-w-[240px] sm:max-w-[360px] bg-neutral-900/40 px-2 py-0.5 rounded border border-neutral-800/50 text-xs">
+                  {/* HERANÇA INTELIGENTE DO GLOBALS.CSS (Sem classes dark:) */}
+                  <span className="font-mono text-neutral-300 truncate max-w-[240px] sm:max-w-[360px] bg-surface px-2 py-0.5 rounded border border-border/50 text-xs">
                     {page.path}
                   </span>
                   <span className="font-semibold text-white">{page.views}</span>
@@ -296,11 +286,12 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                   <div key={device.name} className="space-y-1.5">
                     <div className="flex justify-between text-xs text-neutral-300">
                       <span className="capitalize font-medium">{device.name}</span>
-                      <span className="text-neutral-400 font-mono">{device.users} ({pct}%)</span>
+                      <span className="text-neutral-500 font-mono">{device.users} ({pct}%)</span>
                     </div>
-                    <div className="w-full bg-neutral-900/60 h-2 rounded-full overflow-hidden border border-neutral-800/40">
+                    {/* PROGRESS BAR: A usar o bg-white que o globals.css inteligentemente inverte! */}
+                    <div className="w-full bg-background/50 h-2 rounded-full overflow-hidden border border-border/40">
                       <div 
-                        className="bg-neutral-400 h-full rounded-full transition-all duration-500" 
+                        className="bg-white h-full rounded-full transition-all duration-500" 
                         style={{ width: `${pct}%` }}
                       />
                     </div>
