@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, CheckCircle2, Loader2, ArrowRight, CircleDollarSign, MessageSquare } from "lucide-react";
-import { LinkedinIcon, InstagramIcon} from "@/components/ui/icons";
+import { motion, AnimatePresence } from "framer-motion";
+import { Send, CheckCircle2, Loader2, ArrowRight, CircleDollarSign, MessageSquare, ChevronDown } from "lucide-react";
+import { LinkedinIcon, InstagramIcon } from "@/components/ui/icons";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
@@ -23,6 +23,71 @@ const deadlineOptions = [
   "Flexível"
 ];
 
+// DADOS DA SUA FAQ SEPARADOS POR CATEGORIA
+const faqData = [
+  {
+    category: "Processo",
+    questions: [
+      { q: "Como funciona o processo do projeto?", a: "Após o envio do formulário, analiso sua necessidade e retorno com uma proposta alinhada ao objetivo, escopo e direção do projeto." },
+      { q: "O projeto já precisa estar planejado?", a: "Não. Posso ajudar desde a fase inicial da ideia, estruturação e definição da melhor solução." },
+      { q: "Você ajuda na parte estratégica?", a: "Sim. Além do desenvolvimento visual e técnico, também auxilio na experiência, organização e direção criativa do projeto." },
+      { q: "Posso enviar referências?", a: "Claro. Referências ajudam bastante a entender o estilo, identidade e resultado esperado." },
+      { q: "Como funciona o briefing?", a: "O briefing serve para entender seu projeto, objetivos, referências, funcionalidades e necessidades específicas antes do início." },
+      { q: "Como acompanho o andamento do projeto?", a: "O acompanhamento acontece durante todas as etapas, com atualizações, alinhamentos e validações conforme o desenvolvimento avança." }
+    ]
+  },
+  {
+    category: "Prazos",
+    questions: [
+      { q: "Qual o tempo médio de resposta?", a: "Normalmente respondo em até 24 horas úteis." },
+      { q: "Quanto tempo leva para finalizar um projeto?", a: "O prazo varia conforme complexidade, escopo e quantidade de funcionalidades do projeto." },
+      { q: "Existe prazo mínimo?", a: "Sim. Cada projeto possui um cronograma específico para garantir qualidade no resultado final." },
+      { q: "O projeto é entregue pronto para uso?", a: "Sim. Os projetos são entregues prontos para utilização, publicação ou implementação." },
+      { q: "O site funciona no celular?", a: "Sim. Todos os projetos são desenvolvidos de forma responsiva para desktop, tablet e dispositivos móveis." }
+    ]
+  },
+  {
+    category: "Pagamento",
+    questions: [
+      { q: "Como funciona o pagamento?", a: "O pagamento geralmente é dividido em etapas, com entrada inicial e restante alinhado durante o projeto." },
+      { q: "Você emite nota fiscal?", a: "Dependendo do projeto e formato da contratação, isso pode ser alinhado previamente." },
+      { q: "O orçamento é personalizado?", a: "Sim. Cada projeto possui necessidades diferentes, então os valores são definidos de forma personalizada." },
+      { q: "Posso parcelar?", a: "Dependendo do escopo e duração do projeto, é possível alinhar formas de pagamento." },
+      { q: "Existe valor mínimo para projetos?", a: "Sim. O valor varia conforme a complexidade e demanda envolvida no desenvolvimento." }
+    ]
+  },
+  {
+    category: "Tecnologia",
+    questions: [
+      { q: "Você desenvolve apenas websites?", a: "Não. Também trabalho com sistemas web, aplicações, automações, interfaces e soluções digitais personalizadas." },
+      { q: "Quais tecnologias você utiliza?", a: "Utilizo tecnologias modernas focadas em performance, experiência e escalabilidade no desenvolvimento dos projetos." },
+      { q: "Você cria sistemas personalizados?", a: "Sim. Os sistemas podem ser desenvolvidos conforme a necessidade específica de cada projeto." },
+      { q: "Trabalha com automações?", a: "Sim. Também desenvolvo soluções automatizadas para otimizar processos e produtividade." },
+      { q: "Faz integração com APIs?", a: "Sim. É possível integrar APIs, plataformas externas e serviços específicos conforme a necessidade do projeto." },
+      { q: "O projeto é otimizado para performance?", a: "Sim. Os projetos são desenvolvidos buscando boa performance, organização e experiência de uso." }
+    ]
+  },
+  {
+    category: "Criativo",
+    questions: [
+      { q: "Você também trabalha com edição de vídeo?", a: "Sim. Trabalho com edição criativa, vídeos comerciais, reels, conteúdos cinematográficos e projetos audiovisuais." },
+      { q: "Faz motion design?", a: "Sim. Também desenvolvo animações, motion graphics e elementos visuais dinâmicos." },
+      { q: "Trabalha com identidade visual?", a: "Sim. Posso desenvolver identidade visual, direção estética e elementos visuais para marcas e projetos." },
+      { q: "Pode cuidar da direção criativa?", a: "Sim. Além da execução técnica, também ajudo na construção visual e criativa do projeto." },
+      { q: "Faz conteúdo para redes sociais?", a: "Sim. Também produzo conteúdos visuais e audiovisuais voltados para redes sociais." }
+    ]
+  },
+  {
+    category: "Suporte",
+    questions: [
+      { q: "Você faz manutenção após a entrega?", a: "Sim. Dependendo do projeto, posso oferecer suporte e manutenção contínua." },
+      { q: "Posso solicitar atualizações futuras?", a: "Sim. Novas funcionalidades, ajustes e melhorias podem ser adicionados posteriormente." },
+      { q: "Existe suporte técnico?", a: "Sim. O suporte pode ser alinhado conforme a necessidade do projeto." },
+      { q: "Você oferece acompanhamento contínuo?", a: "Sim. Alguns projetos podem contar com acompanhamento, suporte e evolução contínua após a entrega." }
+    ]
+  }
+];
+
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -33,6 +98,10 @@ export default function ContactPage() {
   });
 
   const [budgetValue, setBudgetValue] = useState<number>(15000);
+
+  // Estados para a FAQ
+  const [activeFaqCategory, setActiveFaqCategory] = useState(faqData[0].category);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,7 +130,7 @@ export default function ContactPage() {
       needs: formData.needs,
       deadline: formData.deadline,
       budget: formatCurrency(budgetValue),
-      message: formData.message, // Enviando para a coluna message
+      message: formData.message,
     }]);
 
     setIsSubmitting(false);
@@ -136,7 +205,6 @@ export default function ContactPage() {
           </span>
         </motion.h1>
 
-        {/* TEXTO PERSONALIZADO ATUALIZADO */}
         <motion.p
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -206,12 +274,13 @@ export default function ContactPage() {
             <div className="p-5 rounded-2xl bg-background/40 border border-border/50">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
-                  <label htmlFor="budget" className="block text-xs font-mono uppercase text-neutral-500">Orçamento Previsto</label>
+                  <label htmlFor="budgetValue" className="block text-xs font-mono uppercase text-neutral-500">Orçamento Previsto</label>
                 </div>
                 <div className="flex items-center gap-2 bg-surface border border-border rounded-xl px-3 py-2 max-w-[160px]">
                   <CircleDollarSign className="w-4 h-4 text-neutral-500 shrink-0" />
                   <input 
-                    id="budget"
+                    id="budgetValue"
+                    title="Orçamento Previsto"
                     type="text" 
                     value={new Intl.NumberFormat('pt-BR').format(budgetValue)}
                     onChange={(e) => {
@@ -225,9 +294,9 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="budgetRange" className="sr-only">Orçamento Previsto</label>
                 <input 
                   id="budgetRange"
+                  title="Orçamento Previsto"
                   type="range" 
                   min="1000" 
                   max="100000" 
@@ -235,8 +304,6 @@ export default function ContactPage() {
                   value={budgetValue}
                   onChange={(e) => setBudgetValue(Number(e.target.value))}
                   className="w-full h-1.5 bg-border rounded-lg appearance-none cursor-pointer accent-accent-blue"
-                  aria-label="Orçamento Previsto"
-                  title="Orçamento Previsto"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-neutral-500">
                   <span>R$ 1k</span>
@@ -275,12 +342,76 @@ export default function ContactPage() {
           </div>
         </motion.form>
 
+        {/* --- FAQ SECTION --- */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-20 pt-16 border-t border-border/30 max-w-2xl mx-auto"
+        >
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-bold text-white mb-3">Perguntas Frequentes</h2>
+            <p className="text-sm text-neutral-500">Tire suas dúvidas sobre o meu processo, prazos e métodos de trabalho.</p>
+          </div>
+
+          {/* Filtros da FAQ (Tabs) */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {faqData.map((cat) => (
+              <button
+                key={cat.category}
+                type="button"
+                onClick={() => {
+                  setActiveFaqCategory(cat.category);
+                  setOpenFaqIndex(null); // Fecha a aba aberta ao mudar de categoria
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
+                  activeFaqCategory === cat.category
+                    ? "bg-accent-blue/10 text-accent-blue border border-accent-blue/20"
+                    : "bg-surface/20 text-neutral-400 border border-border/40 hover:text-white hover:bg-surface/40"
+                }`}
+              >
+                {cat.category}
+              </button>
+            ))}
+          </div>
+
+          {/* Acordeão de Perguntas */}
+          <div className="space-y-3">
+            {faqData.find(c => c.category === activeFaqCategory)?.questions.map((faq, idx) => (
+              <div key={idx} className="border border-border/40 rounded-xl bg-surface/10 overflow-hidden transition-all">
+                <button
+                  type="button"
+                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                  className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-surface/20 transition-colors cursor-pointer"
+                >
+                  <span className="text-sm font-medium text-white pr-4">{faq.q}</span>
+                  <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform duration-300 shrink-0 ${openFaqIndex === idx ? "rotate-180 text-white" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {openFaqIndex === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <div className="px-5 pb-4 pt-1 text-sm text-neutral-400 leading-relaxed border-t border-border/10 mt-1">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* REDES SOCIAIS */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-12 flex flex-col items-center justify-center gap-4 pt-6"
+          className="mt-16 flex flex-col items-center justify-center gap-4"
         >
           <p className="text-sm text-neutral-500">Ou entre em contato diretamente pelas redes:</p>
           <div className="flex items-center gap-4">
@@ -292,6 +423,7 @@ export default function ContactPage() {
             </a>
           </div>
         </motion.div>
+
       </div>
     </div>
   );
