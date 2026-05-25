@@ -23,10 +23,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-32 pb-10  transition-colors duration-500">
+    <div className="min-h-screen flex flex-col items-center pt-5 pb-5  transition-colors duration-500">
 
       {/* --- HERO SECTION REFINADA (PREMIUM / ESTRATÉGICA) --- */}
-      <section className="flex flex-col items-center text-center px-6 md:px-8 max-w-4xl relative mb-40">
+      <section className="flex flex-col items-center text-center px-6 md:px-8 max-w-4xl relative mb-20">
 
         {/* Badge / Label Estratégico */}
         <motion.div
@@ -86,7 +86,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2, delay: 0.6, ease: cinematicEasing }}
-        className="w-full mt-32 md:mt-40"
+        className="w-full mt-10 md:mt-10"
       >
         <TechStack />
       </motion.div>
