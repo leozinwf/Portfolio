@@ -11,14 +11,14 @@ import { createClient } from "@/utils/supabase/client";
 const primaryLinks = [
   { name: "Início", href: "/" },
   { name: "Projetos", href: "/projects" },
-  { name: "Motion", href: "/motion" },
+  { name: "Blog", href: "/blog" },
   { name: "Sobre", href: "/about" },
   { name: "Contato", href: "/contact" },
 ];
 
 const secondaryLinks = [
-  { name: "Blog", href: "/blog" },
   { name: "Playground", href: "/playground" },
+  // { name: "Motion", href: "/motion" },
 ];
 
 const allLinks = [...primaryLinks, ...secondaryLinks];
@@ -27,7 +27,7 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -41,7 +41,7 @@ export function Navbar() {
     // Lógica robusta para inicializar o Dark Mode
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    
+
     if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
       document.documentElement.classList.add("dark");
       setIsDark(true);
@@ -67,7 +67,7 @@ export function Navbar() {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       subscription.unsubscribe();
@@ -101,15 +101,15 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-md border-b border-border/40 transition-colors duration-500">
       <nav className="container mx-auto px-6 md:px-8 h-16 flex items-center justify-between max-w-5xl">
-        
+
         {/* LOGO */}
         <Link href="/" className="hover:opacity-80 transition-opacity flex items-center gap-2">
-          <Image 
-            src="/logo.png" 
-            alt="LeozinWF Logo" 
-            width={36} 
-            height={36} 
-            className="rounded-lg object-contain dark:invert" 
+          <Image
+            src="/logo.png"
+            alt="LeozinWF Logo"
+            width={36}
+            height={36}
+            className="rounded-lg object-contain dark:invert"
             priority
           />
         </Link>
@@ -122,9 +122,8 @@ export function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  isActive ? "text-foreground" : "text-neutral-400 hover:text-foreground"
-                }`}
+                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors ${isActive ? "text-foreground" : "text-neutral-400 hover:text-foreground"
+                  }`}
               >
                 {isActive && (
                   <motion.div
@@ -142,9 +141,8 @@ export function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDesktopDropdownOpen(!isDesktopDropdownOpen)}
-              className={`p-2 rounded-xl text-neutral-400 hover:text-foreground hover:bg-surface/50 border border-transparent transition-all ${
-                isDesktopDropdownOpen ? "bg-surface/50 border-border/30 text-foreground" : ""
-              }`}
+              className={`p-2 rounded-xl text-neutral-400 hover:text-foreground hover:bg-surface/50 border border-transparent transition-all ${isDesktopDropdownOpen ? "bg-surface/50 border-border/30 text-foreground" : ""
+                }`}
             >
               <MoreHorizontal className="w-4 h-4" />
             </button>
@@ -165,9 +163,8 @@ export function Navbar() {
                         key={link.name}
                         href={link.href}
                         onClick={() => setIsDesktopDropdownOpen(false)}
-                        className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                          isActive ? "bg-surface text-foreground" : "text-neutral-400 hover:text-foreground hover:bg-surface/30"
-                        }`}
+                        className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${isActive ? "bg-surface text-foreground" : "text-neutral-400 hover:text-foreground hover:bg-surface/30"
+                          }`}
                       >
                         {link.name}
                       </Link>
@@ -223,11 +220,10 @@ export function Navbar() {
           {isLogged && (
             <Link
               href="/admin"
-              className={`ml-2 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono tracking-wider uppercase transition-all ${
-                pathname.startsWith("/admin")
+              className={`ml-2 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono tracking-wider uppercase transition-all ${pathname.startsWith("/admin")
                   ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
                   : "border-border bg-surface/50 text-neutral-400 hover:text-foreground hover:border-neutral-500/30"
-              }`}
+                }`}
             >
               <ShieldCheck className="w-3.5 h-3.5" /> Admin
             </Link>
@@ -236,7 +232,7 @@ export function Navbar() {
 
         {/* MOBILE MENU TRIGGER */}
         <div className="flex lg:hidden items-center gap-2">
-          
+
           <button onClick={toggleTheme} className="p-2 text-neutral-400">
             {isDark ? <Sun className="w-5 h-5 text-orange-400" /> : <Moon className="w-5 h-5 text-accent-purple" />}
           </button>
@@ -267,7 +263,7 @@ export function Navbar() {
             className="absolute top-16 left-0 right-0 w-full border-b border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl lg:hidden z-40"
           >
             <div className="flex flex-col gap-1 p-6 max-w-md mx-auto">
-              
+
               {/* Pesquisa Mobile */}
               <form onSubmit={handleSearch} className="mb-4">
                 <div className="relative">
@@ -289,9 +285,8 @@ export function Navbar() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                      isActive ? "bg-surface text-foreground" : "text-neutral-400 hover:text-foreground"
-                    }`}
+                    className={`px-4 py-3 rounded-xl text-base font-medium transition-colors ${isActive ? "bg-surface text-foreground" : "text-neutral-400 hover:text-foreground"
+                      }`}
                   >
                     {link.name}
                   </Link>
