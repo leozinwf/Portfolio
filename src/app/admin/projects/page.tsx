@@ -11,8 +11,15 @@ export default async function AdminProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-white">Meus projetos</h2>
+      {/* Cabeçalho */}
+      <div>
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Plus className="w-6 h-6 text-neutral-400" />
+          Gerencie seus projetos
+        </h2>
+        <p className="text-neutral-400 text-sm mt-1">
+          Adicione, edite e visualize seus projetos.
+        </p>
         <Link href="/admin/projects/new" className="bg-white text-black px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
           <Plus className="w-4 h-4" /> Novo Projeto
         </Link>

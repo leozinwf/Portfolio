@@ -1,5 +1,4 @@
 import { Eye, Users, MousePointerClick, Clock, FileText, Monitor, Compass, Globe } from "lucide-react";
-import { PageToggle } from "@/components/admin/PageToggle";
 import { DateFilter } from "@/components/admin/DateFilter";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 
@@ -194,12 +193,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-8">
       {/* SEÇÃO DE CONTROLE DINÂMICO E FILTRO */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-end border-b border-border/10 pb-6">
-        <div className="space-y-4 w-full md:w-auto">
-          <h3 className="text-xs font-mono uppercase tracking-widest text-neutral-500">Status e Visibilidade de Páginas</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <PageToggle />
-          </div>
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center border-b border-border/10 pb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Visão Geral</h2>
+          <p className="text-sm text-neutral-400 mt-1">Acompanhe o desempenho do seu portfólio em tempo real.</p>
         </div>
         
         <DateFilter />
