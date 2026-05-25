@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { headers } from "next/headers";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-mono" });
@@ -131,6 +132,7 @@ export default async function RootLayout({
 
         {/* O Footer permanece oculto no ecossistema admin */}
         {!isAdminOrLogin && <Footer />}
+        <ScrollToTop />
       </body>
     </html>
   );
