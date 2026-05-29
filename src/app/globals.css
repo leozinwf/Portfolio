@@ -97,14 +97,24 @@
   }
 
   /* FORÇAR CONTRASTE NOS INPUTS (Placeholder e Texto digitado) */
-  input, textarea {
+  input, textarea, select {
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-border) !important;
     color: var(--text-main-dynamic) !important;
-  }
-  input::placeholder, textarea::placeholder {
-    color: var(--text-muted-dynamic) !important;
-    opacity: 0.7;
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.3s ease;
   }
 
+  input::placeholder, textarea::placeholder {
+    color: var(--text-muted-dynamic) !important;
+    opacity: 0.6;
+  }
+
+  /* Estado de Focus (quando você clica para digitar) */
+  input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: var(--color-accent-blue) !important;
+    box-shadow: 0 0 0 1px var(--color-accent-blue) !important; /* Dá um leve brilho azul na borda */
+  }
   /* Inversão inteligente do botão principal de CTA */
   .bg-white {
     background-color: var(--text-main-dynamic) !important;
