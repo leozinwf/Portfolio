@@ -216,3 +216,40 @@
 .dark .ql-editor a {
   color: var(--color-accent-blue) !important;
 }
+
+/* ==========================================================================
+   BLOG CONTENT - CORREÇÃO EXCLUSIVA DE CORES E QUEBRA DE TEXTO
+   ========================================================================== */
+
+/* 1. Força Preto/Branco com alta especificidade para vencer o @layer base */
+.prose.blog-content p,
+.prose.blog-content li,
+.prose.blog-content h1,
+.prose.blog-content h2,
+.prose.blog-content h3,
+.prose.blog-content h4,
+.prose.blog-content strong,
+.prose.blog-content em,
+.prose.blog-content blockquote,
+.prose.blog-content span {
+  color: var(--text-main-dynamic) !important;
+}
+
+/* Cor das bolinhas e números nas listas */
+.prose.blog-content li::marker {
+  color: var(--text-main-dynamic) !important;
+}
+
+/* 2. Conserta a quebra de palavras APENAS nos textos (protegendo o layout do site) */
+.prose.blog-content p,
+.prose.blog-content li,
+.prose.blog-content h1,
+.prose.blog-content h2,
+.prose.blog-content h3,
+.prose.blog-content h4,
+.prose.blog-content blockquote,
+.prose.blog-content span {
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+}

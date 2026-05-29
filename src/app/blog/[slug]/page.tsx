@@ -31,13 +31,18 @@ export default async function BlogPostPage({ params }: PageProps) {
   });
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-20 space-y-8 animate-in fade-in duration-500">
+    <main className="max-w-3xl mx-auto px-6 py-20 space-y-8 animate-in fade-in duration-500 overflow-x-hidden">
       
-      <Link href="/blog" className="inline-flex items-center gap-1 text-xs font-mono text-neutral-500 hover:text-neutral-300 transition-colors group mb-4">
+      {/* Botão de Voltar */}
+      <Link 
+        href="/blog" 
+        className="inline-flex items-center gap-1 text-xs font-mono text-neutral-500 hover:text-neutral-300 transition-colors group mb-4"
+      >
         <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
         Voltar para o blog
       </Link>
 
+      {/* Cabeçalho do Artigo */}
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-neutral-500">
           <span className="flex items-center gap-1 bg-neutral-900/40 border border-neutral-800/60 px-2.5 py-0.5 rounded-md text-[10px] uppercase tracking-wider font-medium text-neutral-300">
@@ -55,13 +60,13 @@ export default async function BlogPostPage({ params }: PageProps) {
           )}
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight break-words">
           {post.title}
         </h1>
         
         {post.excerpt && (
-          <p className="text-lg text-neutral-400 font-light leading-relaxed pt-2">
-            {post.excerpt}
+          <p className="text-lg text-neutral-400 font-light leading-relaxed pt-2 italic break-words">
+            "{post.excerpt}"
           </p>
         )}
       </div>
@@ -80,15 +85,11 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Separador caso não haja capa para afastar o conteúdo */}
       {!post.cover_image && <div className="border-b border-border/20 pb-8"></div>}
 
+      {/* Conteúdo do Artigo Formatado com Tailwind Prose protegido contra overflow */}
       <article 
-        className="prose prose-neutral dark:prose-invert max-w-none 
-          prose-p:text-neutral-400 prose-p:leading-relaxed prose-p:text-sm sm:prose-p:text-base
-          prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-tight
-          prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
-          prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-          prose-strong:text-white prose-em:text-neutral-300
-          prose-img:rounded-2xl prose-img:border prose-img:border-border/20 prose-img:w-full prose-img:shadow-lg
-          prose-code:text-neutral-200 prose-code:bg-neutral-900/60 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:border prose-code:border-neutral-800/40 prose-code:font-mono prose-code:text-xs"
+        className="prose max-w-none w-full overflow-x-hidden blog-content
+          prose-img:rounded-2xl prose-img:border prose-img:border-border/20 prose-img:w-full prose-img:h-auto prose-img:shadow-lg
+          prose-pre:bg-surface prose-pre:border prose-pre:border-border/50 prose-pre:overflow-x-auto prose-pre:max-w-full"
         dangerouslySetInnerHTML={{ __html: post.content || "" }}
       />
     </main>
